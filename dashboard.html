@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Dashboard</title>
+</head>
+
+<body>
+
+<h1>Dashboard Siswa</h1>
+
+<p id="nama"></p>
+
+<script>
+
+const nama =
+localStorage.getItem("nama");
+
+document.getElementById(
+"nama"
+).innerText = nama;
+
+</script>
+
+</body>
+
+</html>
