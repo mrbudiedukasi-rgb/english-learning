@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Login</title>
+</head>
+
+<body>
+
+    <h2>Scan QR Login</h2>
+
+    <input
+    type="text"
+    id="studentId"
+    placeholder="Masukkan ID">
+
+    <button onclick="login()">
+        Login
+    </button>
+
+    <script>
+
+    function login(){
+
+        const id =
+        document.getElementById(
+        "studentId"
+        ).value;
+
+        alert(
+        "ID siswa: " + id
+        );
+
+    }
+
+    </script>
+
+</body>
+</html>
