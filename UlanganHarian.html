@@ -60,7 +60,54 @@ Kirim
 
 <script>
 
-function submitQuiz(){
+function async function submitQuiz(){
+
+ let nilai=0;
+
+ const jawaban=
+ document.querySelector(
+ 'input[name="q1"]:checked'
+ );
+
+ if(
+ jawaban &&
+ jawaban.value==="B"
+ ){
+   nilai=100;
+ }
+
+ const data = {
+
+   id:"1001",
+
+   nama:
+   document
+   .getElementById(
+   "nama"
+   ).value,
+
+   kelas:
+   document
+   .getElementById(
+   "kelas"
+   ).value,
+
+   nilai:nilai
+
+ };
+
+ await fetch(
+ "https://script.google.com/macros/s/AKfycbwqK4LiFM8FO6-DDMbB2dmqnNr1L8TRRYUk9jyrDcbRXfPRL3Eu5bvKsztDa2uxQzpElw/exec",
+ {
+   method:"POST",
+   body:JSON.stringify(data)
+ });
+
+ alert(
+ "Nilai berhasil dikirim"
+ );
+
+}{
 
  let nilai=0;
 
