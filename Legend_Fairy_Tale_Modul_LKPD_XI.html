@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Legend & Fairy Tale — Modul Ajar & LKPD XI</title>
+<style>
+:root{--blue:#1261a0;--blue2:#073b66;--orange:#f28c28;--orange2:#ffb347;--bg:#f4f7fb;--card:#fff;--text:#172033;--muted:#667085;--ok:#087f5b;--bad:#c92a2a}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+body.dark{--bg:#101827;--card:#172235;--text:#edf2f7;--muted:#aab6c5}
+header{background:linear-gradient(135deg,var(--blue2),var(--blue),var(--orange));color:#fff;padding:24px;position:sticky;top:0;z-index:20;box-shadow:0 5px 20px #0002}
+.top{max-width:1200px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:15px}.brand{font-weight:800;letter-spacing:.5px}.actions button,.btn{border:0;border-radius:12px;padding:10px 16px;font-weight:700;cursor:pointer;background:#fff;color:var(--blue2)}
+main{max-width:1200px;margin:25px auto;padding:0 16px}.card{background:var(--card);border-radius:20px;padding:24px;margin-bottom:20px;box-shadow:0 8px 30px #17324d12}.hero{background:linear-gradient(135deg,#e8f4ff,#fff3df)}h1,h2,h3{line-height:1.2}h1{font-size:clamp(2rem,5vw,3.6rem)}h2{color:var(--blue)}label{font-weight:700;display:block;margin:12px 0 6px}input,select,textarea{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:10px;background:var(--card);color:var(--text);font:inherit}button.primary{background:linear-gradient(135deg,var(--blue),var(--orange));color:#fff}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px}.hidden{display:none!important}.error{color:var(--bad);font-weight:800;margin-top:8px}.success{color:var(--ok);font-weight:800}.progress{height:10px;background:#dbe5ef;border-radius:99px;overflow:hidden;margin:15px 0}.bar{height:100%;background:linear-gradient(90deg,var(--blue),var(--orange));width:0;transition:.4s}.slide{display:none;animation:slide .35s ease}.slide.active{display:block}@keyframes slide{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:none}}
+.nav{display:flex;justify-content:space-between;gap:10px;margin-top:18px}.pill{display:inline-block;padding:5px 10px;border-radius:99px;background:#e7f2ff;color:var(--blue);font-weight:800;font-size:.85rem}.stimulus{border-left:5px solid var(--orange);padding:15px;background:#fff8ed;border-radius:10px;margin:14px 0}.q{padding:16px;border:1px solid #dce4ed;border-radius:14px;margin:14px 0}.q h4{margin:0 0 8px}.option{display:block;font-weight:500;margin:7px 0}.option input{width:auto;margin-right:8px}.resultbox{font-size:1.05rem}.score{font-size:3rem;font-weight:900;color:var(--orange)}table{width:100%;border-collapse:collapse;margin:10px 0}th,td{padding:9px;border:1px solid #dbe2ea;text-align:left;font-size:.9rem}th{background:#edf5fc}.sidebar{position:sticky;top:95px}.tag{font-size:.78rem;background:#eef2ff;border-radius:6px;padding:3px 7px;margin-left:4px}.teacher table{display:block;overflow:auto}.small{font-size:.9rem;color:var(--muted)}@media(max-width:700px){header{position:relative}.top{align-items:flex-start;flex-direction:column}.card{padding:17px}.nav{flex-direction:column}.nav button{width:100%}}
+@media print{header,.actions,.login,.nav,.btn,.teacher{display:none!important}body{background:#fff}.card{box-shadow:none;border:1px solid #ddd}}
+</style>
+</head>
+<body>
+<header><div class="top"><div class="brand">📘 ENGLISH XI • LEGEND & FAIRY TALE</div><div class="actions"><button onclick="toggleDark()">🌙 Dark Mode</button></div></div></header>
+<main>
+<section id="login" class="card login hero">
+<h1>LEGEND & FAIRY TALE</h1>
+<p>Interactive Module & LKPD — Bahasa Inggris Kelas XI SMA</p>
+<div class="grid">
+<div><label>Nama Lengkap</label><input id="studentName" placeholder="WAJIB DITULIS DENGAN HURUF KAPITAL SEMUA"></div>
+<div><label>Kelas</label><select id="studentClass"><option value="">Pilih Kelas</option><option>XI IPA 1</option><option>XI IPA 2</option><option>XI IPA 3</option><option>XI IPS 1</option><option>XI IPS 2</option><option>XI IPS 3</option><option>XI IPS 4</option></select></div>
+<div><label>Kode Akses Materi</label><input id="accessCode" type="password"></div>
+</div>
+<button class="btn primary" onclick="login()">Masuk Materi</button>
+<div id="loginMsg" class="error"></div>
+</section>
+
+<section id="app" class="hidden">
+<div class="card">
+<div class="grid"><div><span class="pill" id="meetingPill"></span><h2 id="meetingTitle"></h2><p id="meetingTarget"></p></div><div><strong>Progress Materi</strong><div class="progress"><div class="bar" id="slideBar"></div></div><span id="slideCount"></span></div></div>
+</div>
+<div id="slides"></div>
+<div id="unlock" class="card hidden">
+<h2>🔐 Buka Soal LKPD</h2><p>Masukkan kode akses untuk membuka LKPD.</p>
+<input id="lcode" type="password" autocomplete="off"><button class="btn primary" onclick="unlockLKPD()">Buka Soal LKPD</button><div id="unlockMsg" class="error"></div>
+</div>
+<div id="worksheet" class="hidden"></div>
+<div id="result" class="hidden"></div>
+</section>
+
+<section id="teacher" class="card teacher hidden"></section>
+</main>
+<script>
+const meetings=[
+{title:"Pertemuan 1 — Introduction to Legends and Fairy Tales",target:"Students distinguish legends from fairy tales and identify their main characteristics.",access:"sadar123",selis:"P1 — Sadar",
+slides:[
+["Warm-Up","A legend is a traditional narrative often connected to a real place, person, or historical memory. A fairy tale is a fictional narrative that commonly includes magic, imaginary creatures, or impossible events."],
+["Legend","Typical features include a connection to a community, a recognizable setting, cultural memory, and a story that may explain the origin of a place or tradition. Legends can change as they are retold."],
+["Fairy Tale","Fairy tales often use imaginative worlds, magical objects, talking animals, supernatural helpers, and clear conflicts between good and harmful choices. They usually entertain while teaching a lesson."],
+["Compare","Both genres have characters, setting, plot, conflict, and a message. A major difference is that legends are often associated with cultural or historical places, while fairy tales are more openly imaginative."],
+["Key Takeaways","Ask: Is the story linked to a place or cultural memory? Does it use magic freely? Can both be true? Use evidence from the text rather than judging only by the title."]
+]},
+{title:"Pertemuan 2 — Generic Structure",target:"Students identify Orientation, Complication, Resolution, and Reorientation/Coda.",access:"empati000",selis:"P2 — Empati",
+slides:[
+["Orientation","The orientation introduces the characters, setting, and initial situation. It answers questions such as who, where, and when."],
+["Complication","The complication presents the central problem or conflict. It changes the initial situation and creates a reason for the characters to act."],
+["Resolution","The resolution explains how the main problem is solved, partly solved, or transformed. A resolution may be happy, sad, surprising, or open-ended."],
+["Reorientation / Coda","A reorientation may close the story by returning to the situation after the conflict. A coda adds a comment, reflection, or moral lesson. Not every narrative has a separate coda."],
+["Structure Analysis","When reading, divide the story into functional parts. Do not rely only on paragraph position: identify what each part does in the narrative."]
+]},
+{title:"Pertemuan 3 — Characters, Setting, and Plot",target:"Students analyze characters, setting, plot development, and conflict.",access:"luhur010",selis:"P3 — Luhur",
+slides:[
+["Characters","The main character drives the central action. Supporting characters influence, help, challenge, or reveal the personality of the main character."],
+["Setting","Setting includes place and time. It can shape the mood and explain why a character can or cannot make a particular choice."],
+["Plot","A plot develops from an initial situation through rising conflict toward a turning point and resolution. Events should be examined through cause and effect."],
+["Conflict","Conflict may be internal, between a character and another character, between a character and society, or between a character and nature."],
+["Deep Reading","Ask what a character wants, what blocks that goal, how the character changes, and which events cause later consequences."]
+]},
+{title:"Pertemuan 4 — Moral Values and Critical Thinking",target:"Students evaluate moral lessons, cultural values, decisions, perspectives, and similarities between stories.",access:"introspektif111",selis:"P4 — Introspektif",
+slides:[
+["Moral Lessons","A moral lesson is an idea about choices, values, or consequences that readers can learn from a story. It should be supported by events in the text."],
+["Cultural Values","Stories can reflect respect for elders, community responsibility, courage, honesty, hospitality, or other values. Readers should distinguish cultural context from universal moral claims."],
+["Character Decisions","Evaluate a decision by considering intention, available information, consequences, and alternatives. A character can make a poor decision without being a completely bad person."],
+["Perspective","Ask how the story might change if another character told it. Different perspectives can reveal hidden motives, unfair assumptions, or emotional complexity."],
+["Compare & Reflect","Compare two stories by evidence: conflict, character choices, consequences, and values. Then connect the lesson to a realistic situation in school or community life."]
+]},
+{title:"Pertemuan 5 — Creative Storytelling",target:"Students create story maps, dialogues, alternative endings, legends, and fairy tales.",access:"santun1234",selis:"P5 — Santun",
+slides:[
+["Story Mapping","Plan characters, setting, goal, conflict, key events, climax, resolution, and moral before drafting."],
+["Dialogue","Good dialogue sounds natural, reveals character, and moves the plot. Use respectful expressions when characters disagree."],
+["Alternative Ending","An alternative ending changes the outcome while remaining consistent with earlier events. Explain what new decision or event creates the change."],
+["Writing a Fairy Tale","Use imaginative elements purposefully: magic, unusual settings, helpers, challenges, and a meaningful lesson."],
+["Writing a Legend","Build a connection to a recognizable place, tradition, object, or community memory. Label fictional elements clearly as part of the narrative craft."]
+]}
+];
+
+const stories=[
+/* 5 stimuli per meeting, each 120+ words */
+[
+`Long ago, villagers living near Mount Bromo told a story about a young man named Jaka Seger. He was known as a calm and responsible leader. He married Roro Anteng, a thoughtful woman from another noble family. The couple lived peacefully, but they worried because they had no children. They prayed and promised to respect the mountain and the community if their wish was granted. In time, they had many children. However, the mountain was still part of their daily life, and the family was expected to keep its promise. When a difficult event threatened the community, the youngest child, Kesuma, became part of the old story. People remembered the tale as an explanation of the Tengger community’s relationship with Mount Bromo. Whether every event happened exactly as told is not the main point. The story remains a cultural narrative that connects a place, a community, a tradition, and a lesson about responsibility.`,
+`Asha lived with her grandmother in a small house beside a forest. One evening, Asha found a silver key under an old tree. When she touched it, a tiny blue bird appeared and said that the key could open only a door protected by kindness. Asha searched the forest and found a wooden door standing between two rocks. Behind it was a room filled with food, books, and warm blankets. A poor traveler was sleeping there. The bird explained that the room belonged to anyone who was willing to share. Asha could have taken the treasures for herself, but she remembered her grandmother’s advice: “A gift becomes meaningful when it helps another person.” She carried the food to the traveler and left the books for village children. The next morning, the door had disappeared, but a small silver key remained in Asha’s pocket. She understood that the real magic was not the key; it was her choice to help others.`,
+`In a coastal village, people told a legend about a fisherman called Arman who discovered a strange stone on the beach. The stone was warm even at night and seemed to glow after rain. Arman brought it home, but his daughter warned him not to keep something that did not belong to him. The next day, the village elder recognized the stone as part of an old shrine destroyed by a storm many years earlier. Arman returned it to the coast with the villagers. Soon after, fishermen repaired the damaged shrine together. The story became a reminder that valuable objects may carry meaning beyond their material price. Younger villagers retell the story differently: some say the stone was magical, while others believe its warmth came from sunlight stored in the rock. Both versions preserve the central idea that community memory can shape a legend.`,
+`Mira was a young tailor who dreamed of attending the king’s festival. She owned only a simple blue dress. One night, a fairy appeared and offered to make the dress magnificent, but only until midnight. Mira agreed and entered the palace. She danced, ate delicious food, and spoke politely with many guests. At eleven-thirty, she noticed a servant carrying heavy trays alone. Instead of ignoring him, Mira helped. The fairy’s magic began to fade before midnight, and Mira returned home without waiting for applause. The next morning, the prince visited the village. He had noticed that the mysterious guest was the only person at the festival who had helped the servant without expecting a reward. Mira was invited back to the palace, not because of the beautiful dress, but because of her kindness. The story suggests that appearance can attract attention, while character earns trust.`,
+`Near an old Indonesian lake, villagers told a story about a farmer who found a golden fish. The fish asked him not to reveal its secret. The farmer agreed, and soon the fish became a woman who married him. They had a daughter, but one day the farmer became angry because the child made a mistake. He shouted words that broke his promise. Dark clouds gathered, rain flooded the valley, and a great lake appeared. The daughter survived on a hill, while the father disappeared. People later called the place Lake Toba. The story is a legend because it is strongly connected with a real geographical place and a community’s cultural memory, although the supernatural events are part of the traditional narrative. Readers may interpret the story as a warning about controlling anger, keeping promises, and thinking before speaking. Different retellings may change details while preserving the central conflict.`
+],
+[
+`A village boy named Rafi once ignored an old bridge because he thought it was ugly. One rainy afternoon, he saw a child trapped on the other side. The bridge looked dangerous, but Rafi remembered that the village carpenter had recently repaired its ropes. He crossed carefully and brought the child back. Later, villagers discovered that several people had been avoiding the bridge because of its appearance, even though it was safe after the repair. The village leader used the event to teach children to distinguish evidence from assumptions. The orientation introduces Rafi, the village, and the bridge. The complication begins when the child becomes trapped. The resolution occurs when Rafi uses reliable information and acts carefully. A short coda explains the lesson: appearances are not enough for a good decision. The story shows that courage does not mean acting without thought; it means making a responsible choice despite uncertainty.`,
+`The old woman in the forest lived alone, but every Friday she left a bowl of rice near her gate. One winter evening, a hungry wolf came to the house. Instead of attacking, the wolf asked for food. The woman invited it to eat outside because she was still cautious. The next week, the wolf returned with firewood. A friendship slowly developed. One day, hunters entered the forest and planned to capture the wolf. The woman warned the wolf, but she did not lie to the hunters. She explained that the wolf had never harmed her and asked them to observe its behavior. The hunters agreed to leave the animal alone. The story’s complication is the threat from the hunters, while the resolution is achieved through honest communication. The coda emphasizes that empathy can grow when people take time to understand another perspective. It also shows that kindness does not require ignoring safety.`,
+`In a town famous for its red roofs, a baker named Lila discovered that her bread tasted sweet whenever she told the truth. At first, she thought the change was a joke. Soon, customers noticed it too. Lila became popular, but she began to fear that one honest mistake would ruin her business. One morning, a customer complained that a loaf was burnt. Lila could have blamed the oven, but she admitted that she had been distracted. She offered a replacement. The customer appreciated her honesty and told others about the experience. The magical bread eventually returned to normal. Lila realized that the special taste had never been the most valuable thing. Her reputation had grown because she accepted responsibility. The orientation establishes the bakery and Lila. The complication is her fear of losing customers. The resolution comes when she tells the truth and repairs the situation. The coda presents honesty as a practical value, not merely a magical idea.`,
+`A prince named Danu was told that a dragon guarded a mountain path. He wanted to become famous, so he planned to defeat it alone. On the journey, he met a farmer who explained that the dragon was protecting a nest. Danu ignored the warning and continued. When he reached the cave, he saw the dragon beside three eggs. The creature did not attack until Danu raised his sword. He lowered it and apologized. Instead of fighting, he asked whether there was another path to the village. The dragon moved aside. Danu returned and told the people what he had learned. The villagers were surprised because the old stories described the dragon as cruel. The complication is Danu’s ambition and the misunderstanding about the dragon. The resolution comes through reconsideration and communication. The story encourages readers to question assumptions before using force. It also illustrates how perspective can change the meaning of an apparently dangerous character.`,
+`A fisherman named Bima found a wooden boat that seemed to repair itself whenever it was damaged. He used it to catch more fish than anyone else. Soon he became wealthy and stopped helping other fishermen. During a storm, the boat carried him far from the shore. He remembered that his neighbors had often helped him repair nets before he became rich. Bima decided to share the boat’s secret when he returned. The magical boat then became an ordinary boat. Some villagers thought the magic had disappeared because Bima had learned the lesson it was meant to teach. Others believed the boat had never been magical. The story’s structure can be divided into an orientation about Bima and the boat, a complication involving greed and the storm, and a resolution involving a change of attitude. The final message is that resources become more valuable when they strengthen a community rather than isolate one person.`
+],
+[
+`Nara was the main character in a story set in a mountain village during a long dry season. She was a curious teenager who wanted to help her family. Her younger brother, Timo, often followed her. The village’s supporting characters included an elderly farmer and a group of neighbors. When the village spring became weak, Nara explored the hills and found a blocked channel. She wanted to clear it immediately, but the farmer warned that the rocks were unstable. Nara listened and organized a group to work safely the next morning. They removed the blockage and restored part of the water flow. The plot develops through a problem, a risky first impulse, advice, cooperation, and a successful action. The story shows that a protagonist does not need to solve everything alone. Nara’s decision changes after she receives information. Her main conflict is partly external—the blocked water channel—and partly internal—her desire to act quickly versus her need to act responsibly.`,
+`In a quiet kingdom, Princess Elara loved maps more than jewels. Her supporting character was Tomas, a young messenger who knew every village road. When a bridge collapsed, the kingdom was divided into two areas. Elara wanted to send supplies immediately, but Tomas explained that the usual road was unsafe. Together they studied an old map and found a narrow forest path. The path was difficult, yet it allowed the supplies to reach the affected villagers. The setting changes from the palace to the forest and then to the isolated village. This change increases the tension because the characters must travel through an unfamiliar environment. Elara is the main character because her choices move the plot forward. Tomas supports her by providing knowledge. The conflict is external because the collapsed bridge blocks movement, but it also tests Elara’s ability to lead. The turning point occurs when she accepts Tomas’s advice rather than insisting on her first plan.`,
+`A boy named Seno lived near a river that was said to sing at midnight. His grandmother believed the song was a warning, while Seno thought it was only the sound of water against stones. One night, he followed the river and heard a melody. He discovered that the sound came from reeds growing between rocks. Suddenly, heavy rain began upstream. Remembering his grandmother’s warning, Seno ran home and told the villagers. They moved their animals to higher ground before the river rose. The story uses both internal and external conflict. Seno’s internal conflict is his uncertainty about whether to trust a traditional belief. The external conflict is the threat of flooding. The setting of time—midnight—and place—the riverbank—creates suspense. Seno changes from a skeptical boy into someone who respects experience while still looking for evidence. The story suggests that tradition and observation can sometimes work together rather than compete.`,
+`A clever fox named Raka lived near a forest market. He often helped a rabbit merchant carry baskets, but he secretly wanted the rabbit’s successful shop. One day, Raka spread a false rumor that the rabbit sold poor-quality fruit. Customers stopped coming. The rabbit investigated and discovered the rumor. Instead of attacking Raka, the rabbit asked him why he had done it. Raka admitted that he was jealous. The rabbit offered him a job managing deliveries. Raka accepted and gradually became trustworthy. The plot contains a clear conflict between the two characters, but the deeper conflict is inside Raka: he wants success but chooses an unfair method. The setting—a forest market—explains why reputation matters. The resolution is not punishment but an opportunity to change. The supporting character, the rabbit, influences Raka’s development by responding calmly. The story encourages readers to examine motives behind harmful actions and to consider restorative solutions.`,
+`In a coastal village, an old lighthouse keeper named Wira lived with his granddaughter, Sari. During a violent storm, the lighthouse lamp stopped working. Wira wanted to repair it himself, but Sari noticed that the electrical system was damaged beyond a simple repair. She contacted the harbor workers, while Wira prepared an emergency lantern. The conflict became urgent when a fishing boat was still at sea. The setting of time—a stormy night—and place—a remote lighthouse—creates danger and suspense. The main characters are Sari and Wira because both make decisions that influence the outcome. Supporting characters include the harbor workers and fishermen. The climax occurs when the emergency lantern is placed in the highest window. The fishing boat sees the light and safely changes direction. The resolution shows cooperation between generations. The story demonstrates that experience and new knowledge can complement each other when people communicate respectfully.`
+],
+[
+`A young woman named Hana lived in a village where people valued hospitality. One day, a tired traveler arrived during a festival. Hana shared her family’s meal even though there was not much food left. Her brother complained that the family might go hungry. Hana explained that they could cook another simple meal the next day. The traveler later revealed that he was a community leader from a distant village. He invited the family to a celebration of local cooperation. The story’s moral value is generosity, but readers should also examine the practical side of Hana’s choice. She did not give away everything; she shared what she could and accepted a reasonable consequence. The cultural value of welcoming travelers is central to the narrative. A critical reader might ask whether the family’s economic situation changes the evaluation of the decision. The story therefore supports more than one perspective. It teaches that kindness can be meaningful when it is balanced with responsibility and awareness of others.`,
+`Two sisters, Lina and Lani, lived in a magical forest. Lina was patient, while Lani was impulsive. They found a tree that produced one golden fruit each year. An inscription said the fruit should be taken only when the village truly needed it. Lani wanted to sell it and buy expensive clothes. Lina suggested waiting until the village’s crops recovered. Their argument became serious, and Lani secretly took the fruit. Before she could sell it, she saw a farmer crying because his family had no food. Lani returned the fruit and apologized. The sisters gave it to the village. The story invites perspective analysis. From Lani’s perspective, the fruit represented freedom and recognition. From the farmer’s perspective, it represented survival. Lina’s decision was more community-centered, but Lani’s desire for personal reward was also understandable. The moral lesson becomes stronger because the character changes after seeing consequences, not simply because someone tells her what is right.`,
+`A legend from a fictional island tells of a chief who built a stone bridge across a dangerous river. The chief ordered everyone to cross quickly because he wanted the bridge completed before a ceremony. A young builder warned that one section was weak, but the chief ignored him. During the ceremony, the bridge cracked. No one was injured because the builder had secretly placed warning signs nearby. The chief admitted his mistake and asked the community to rebuild the bridge together. The story can be compared with narratives about pride and leadership. The chief’s problem is not only that he makes a poor technical decision; he fails to listen to another person’s expertise. The moral value is responsible leadership. A critical reader should also notice that the builder’s secret action prevented harm but did not solve the communication problem. The story therefore encourages leaders to listen and encourages experts to speak clearly when safety is involved.`,
+`In a fairy tale called The Glass Mountain, a girl named Noor climbs a magical mountain to find a medicine for her sick mother. Along the way, she meets a giant who blocks the path. Instead of fighting, Noor asks why he guards the mountain. The giant says people have repeatedly taken treasures without permission. Noor promises to take only the medicine and return. He allows her to pass. At the top, Noor finds the medicine beside a mirror. The mirror shows not her appearance but the consequences of her choices. She sees that taking extra treasure would leave other families without medicine. She takes only what she needs. The story presents a moral lesson about restraint and empathy. The giant’s perspective changes the conflict: he is not simply an obstacle but a protector responding to previous harm. Readers can evaluate Noor’s decision using intention, consequences, and alternatives. The story suggests that understanding another perspective can turn a confrontation into cooperation.`,
+`A village story tells of two friends, Arif and Bayu, who disagree about a community garden. Arif wants to plant vegetables for families, while Bayu wants to plant flowers for visitors. Both have good intentions, but they argue loudly. An elder asks them to interview residents before deciding. The interviews show that families need vegetables, while children want a beautiful space. The friends combine the ideas by dividing the garden into two areas. Their conflict is resolved through evidence and compromise. The story can be compared with fairy tales where a single hero solves a problem alone. Here, the solution is collective rather than magical. The moral value is respectful disagreement. The characters do not need to abandon their original beliefs completely. Instead, they listen, gather information, and create a better plan. In daily life, a similar method could help students solve disagreements about group projects, classroom rules, or school events.`
+],
+[
+`Once there was a young storyteller named Kiran who wanted to write a fairy tale. She created a hero, a talking deer, a hidden valley, and a difficult choice. At first, her story had many magical events but no clear goal. Her teacher asked her to create a story map. Kiran decided that the hero wanted to save a village from a drought. The talking deer became a guide, and the hidden valley contained a spring. The complication began when the hero had to choose between taking the water alone or sharing it. Kiran wrote the resolution as a community effort. This example shows why planning matters before creative writing. A story can have beautiful images but still feel confusing if the character’s goal and conflict are unclear. A strong story map connects each event through cause and effect. The moral value should emerge naturally from the character’s decision rather than being added as an unrelated sentence at the end.`,
+`A student named Malik wanted to rewrite the ending of a classic fairy tale. In the original version, the hero defeated the villain through a magical sword. Malik changed the ending so the hero listened to the villain’s reason for stealing the kingdom’s food. They discovered that the villain’s village had suffered a famine. The hero offered a fair agreement: food would be shared, but the stolen supplies would be returned. The new ending changes the conflict from physical victory to negotiation. To make the alternative ending believable, Malik kept the original setting and characters but changed the hero’s final decision. This is an important creative-writing principle: an alternative ending should grow from existing information. It should not suddenly introduce an unrelated character or magical object merely to solve the problem. Malik’s version also adds moral complexity because the reader can understand the villain without approving the theft.`,
+`In a legend-writing task, Sita chooses a real hill near her town as the setting. She invents a fictional explanation for why a large stone stands at the top. According to her story, a village guardian turned into stone after protecting farmers from a terrible storm. Sita includes a family tradition of visiting the hill every year. Her story is clearly fictional, but it connects the imagined event to a recognizable place and community practice. The story map includes orientation, complication, resolution, and coda. The dialogue is short and polite because the characters disagree about whether the guardian should leave the village. Sita’s teacher praises the story because the setting gives it a local identity while the fictional elements make it a creative legend. The task demonstrates that creative writing is not only about imagination; it is also about choosing details that support a coherent world and meaningful conflict.`,
+`A fairy-tale writer named Edo created a character called Mira who could speak to stars. Edo first wrote long descriptions of every star, but the story became slow. He revised the draft by using dialogue to reveal Mira’s problem. “If I ask the stars for help, I may never learn to solve the problem myself,” Mira says. Her friend answers, “Then ask for advice, not a solution.” This dialogue moves the plot because Mira decides to climb the hill and investigate the mysterious light herself. The example shows how dialogue can reveal personality, conflict, and decisions at the same time. It also demonstrates respectful disagreement. The friend does not insult Mira; instead, the friend offers another perspective. In a classroom story, students can use dialogue to show rather than explain emotions. A character who says, “I am angry,” is less revealing than a character who uses careful but firm words while refusing an unfair request.`,
+`A group of students creates a legend about an old school tree. They decide that the tree was planted by the school’s first principal. In their fictional version, the principal planted it after promising to protect every student’s right to learn. The tree survives storms and becomes a symbol of perseverance. The students map the story with five stages: orientation, complication, turning point, resolution, and coda. Their complication is a plan to cut the tree down because it appears damaged. The students investigate and discover that only a few branches are unsafe. They persuade the school to prune rather than remove the tree. Their coda connects the tree’s survival to responsible decision-making. The story combines creative thinking with evidence-based action. It also models polite dialogue: the students disagree with the plan but present reasons and alternatives rather than attacking the people who proposed it.`
+]
+];
+
+const questionBanks = [
+/* meeting 1 */
+[
+["mc","What is the main reason the Bromo story is considered a legend?","A. It is connected with a real place and cultural memory.","B. It has no characters.","C. It contains only modern technology.","D. It is set in an imaginary kingdom.","E. It has no moral idea.","A","C1","P1","Reading"],
+["mc","Which feature is most typical of a fairy tale?","A. A documented historical event.","B. A school timetable.","C. Magical or impossible events.","D. A scientific report.","E. A news interview.","C","C1","P1","Reading"],
+["mc","What does the silver key represent in Asha’s story?","A. Wealth","B. Kindness and responsible choice","C. Fear of travel","D. Political power","E. Competition","B","C2","P2","Reading"],
+["mc","Why did the villagers return the glowing stone?","A. They wanted to sell it.","B. They disliked Arman.","C. They believed it belonged to their cultural shrine.","D. They wanted to hide it.","E. They needed a new fishing tool.","C","C2","P3","Reading"],
+["mc","Which statement best distinguishes a legend from a fairy tale?","A. Legends never have conflict.","B. Fairy tales never have moral values.","C. Legends often connect with places or cultural memory.","D. Fairy tales must be true.","E. Legends cannot contain supernatural elements.","C","C2","P1","Generic Structure"],
+["mc","The word “retold” in the Bromo story is closest in meaning to...","A. forgotten","B. told again","C. translated","D. corrected","E. hidden","B","C1","P1","Vocabulary"],
+["mc","If Asha had taken all the food for herself, which characteristic of the fairy tale would be weakened?","A. Setting","B. Character development and moral lesson","C. Time expression","D. Dialogue punctuation","E. Place name","B","C3","P2","Critical Thinking"],
+["mc","Which pair contains one legend and one fairy tale?","A. Lake Toba and Cinderella","B. A school notice and Cinderella","C. A recipe and Lake Toba","D. A news article and a map","E. A timetable and a poem","A","C3","P1","Reading"],
+["mc","Which sentence uses the simple past appropriately in a narrative?","A. Arman return the stone yesterday.","B. Arman returns the stone yesterday.","C. Arman returned the stone yesterday.","D. Arman returning the stone yesterday.","E. Arman has return the stone yesterday.","C","C3","P1","Grammar"],
+["mc","What is the strongest evidence that the Lake Toba story functions as a legend?","A. It includes a talking animal.","B. It explains a real geographical place through cultural narrative.","C. It takes place in outer space.","D. It has a prince and a castle.","E. It has no conflict.","B","C4","P3","Critical Thinking"],
+["multi","Which elements are shared by legends and fairy tales?","A. Characters","B. Setting","C. Plot","D. Conflict","E. Scientific data","ABCD","C1","P1","Reading"],
+["multi","Which details in Asha’s story support its fairy-tale character?","A. A magical key","B. A talking blue bird","C. A disappearing door","D. A scientific experiment","E. A supernatural room","ABCE","C2","P2","Reading"],
+["multi","Which statements about legends are reasonable?","A. They may be linked to a place.","B. They can preserve cultural memory.","C. Every event must be historically proven.","D. They may include supernatural elements.","E. They can change through retelling.","ABDE","C2","P3","Critical Thinking"],
+["multi","Which actions show responsible behavior in the stories?","A. Returning the shrine stone","B. Helping the traveler","C. Sharing community resources","D. Taking treasure secretly","E. Keeping a promise","ABCE","C3","P3","Moral Value"],
+["multi","Which features can help a reader classify a text as a fairy tale?","A. Magical objects","B. Imaginary creatures","C. Impossible events","D. A clearly documented date","E. Enchanted settings","ABCE","C3","P1","Reading"],
+["multi","Which statements correctly compare the genres?","A. Both may teach values.","B. Both may have conflicts.","C. Legends are always completely factual.","D. Fairy tales are generally more openly imaginative.","E. Both can be retold.","ABDE","C4","P1","Critical Thinking"],
+["multi","Which evidence would strengthen a claim that a story is a legend?","A. A recognizable local place","B. A community tradition linked to the story","C. An imaginary planet","D. Cultural memory","E. A documented recipe","ABD","C4","P3","Critical Thinking"],
+["multi","Which changes would make the Lake Toba story more like a fairy tale?","A. Move it to an entirely imaginary kingdom.","B. Add a talking moon.","C. Remove the connection to Lake Toba.","D. Add a magical castle unrelated to the place.","E. Keep the cultural connection and only change wording.","ABCD","C5","P3","Creative Thinking"],
+["multi","Which interpretations of the moral in the fisherman story are defensible?","A. Think before speaking.","B. Keep important promises.","C. Anger can have consequences.","D. Wealth is always evil.","E. Words can affect relationships.","ABCE","C5","P4","Moral Value"],
+["multi","Which ideas could create a respectful modern retelling?","A. A community protects a local lake.","B. A character learns to verify rumors.","C. A magical object teaches sharing.","D. A hero humiliates anyone who disagrees.","E. A traditional value is connected to a school situation.","ABCE","C6","P5","Creative Thinking"],
+["tf","A legend can be connected to a real geographical place.","True","C1","P1","Reading"],
+["tf","A fairy tale must describe a scientifically proven event.","False","C1","P1","Reading"],
+["tf","Both legends and fairy tales can contain moral values.","True","C2","P3","Moral Value"],
+["tf","A story can contain supernatural events and still be a legend if it is strongly connected to cultural memory.","True","C3","P3","Critical Thinking"],
+["tf","The presence of a moral lesson alone is enough to prove that a story is a fairy tale.","False","C4","P1","Critical Thinking"],
+["match","Legend","A traditional narrative often linked to a place, person, or cultural memory.","C1","P1","Vocabulary"],
+["match","Fairy tale","A fictional narrative commonly involving magic or imaginative events.","C1","P1","Vocabulary"],
+["match","Cultural memory","Shared ideas and stories remembered by a community.","C2","P3","Moral Value"],
+["match","Supernatural","Beyond ordinary natural explanation.","C3","P1","Vocabulary"],
+["match","Retelling","A new telling of an existing story.","C4","P5","Creative Thinking"]
+],
+/* meeting 2 */
+[
+["mc","What is normally introduced in the orientation?","A. Characters and setting","B. The final moral only","C. The answer key","D. A vocabulary list","E. The title of another story","A","C1","P1","Generic Structure"],
+["mc","What is the main function of the complication?","A. To list vocabulary","B. To create the central problem or conflict","C. To introduce the author","D. To summarize every event","E. To explain grammar","B","C1","P1","Generic Structure"],
+["mc","What does the resolution explain?","A. How the problem is addressed","B. The dictionary meaning of every word","C. The author’s biography","D. The title","E. The reading speed","A","C1","P1","Reading"],
+["mc","What may a coda contain?","A. A reflection or moral comment","B. Only a character name","C. A new unrelated setting","D. A question with no context","E. A vocabulary test","A","C2","P3","Generic Structure"],
+["mc","Why should readers identify the function of a paragraph instead of relying only on its position?","A. Paragraphs never have meaning.","B. Stories can organize events differently.","C. All stories have one paragraph.","D. Position is always wrong.","E. Grammar is irrelevant.","B","C2","P1","Critical Thinking"],
+["mc","In the phrase “One morning, the bridge collapsed,” the event most likely begins the...","A. Orientation","B. Complication","C. Coda","D. Title","E. Bibliography","B","C2","P1","Generic Structure"],
+["mc","If a hero meets a dragon after the initial peaceful situation, that event is most likely part of the...","A. Complication","B. Coda","C. Orientation","D. Reference list","E. Glossary","A","C3","P2","Reading"],
+["mc","Which sequence is most logical?","A. Resolution–Orientation–Complication–Coda","B. Orientation–Complication–Resolution–Coda","C. Coda–Resolution–Orientation–Complication","D. Complication–Coda–Orientation–Resolution","E. Orientation–Coda–Resolution–Complication","B","C3","P1","Generic Structure"],
+["mc","Which sentence best fits a resolution?","A. Lina lived in a quiet village.","B. Suddenly, the bridge broke.","C. Lina asked the villagers for help, and they repaired the bridge.","D. The village had green fields.","E. “Long ago”","C","C3","P3","Reading"],
+["mc","Which evidence most strongly supports labeling a paragraph as a coda?","A. It introduces a new villain.","B. It comments on the lesson learned.","C. It introduces the main character.","D. It creates the first problem.","E. It changes the setting without explanation.","B","C4","P3","Critical Thinking"],
+["multi","Which details belong to orientation?","A. Main characters","B. Time","C. Place","D. Initial situation","E. Final lesson","ABCD","C1","P1","Generic Structure"],
+["multi","Which events are likely complications?","A. A treasure is stolen.","B. A character becomes lost.","C. A bridge collapses.","D. The hero finally returns home.","E. A dragon blocks the path.","ABCE","C2","P2","Plot Analysis"],
+["multi","Which can function as a resolution?","A. The villagers rebuild the bridge.","B. The hero finds a safe route.","C. The conflict is addressed through dialogue.","D. The main problem is introduced.","E. A character solves the central problem.","ABCE","C2","P2","Generic Structure"],
+["multi","Which statements about coda are accurate?","A. It may contain a moral.","B. It may reflect on events.","C. Every story must have a coda.","D. It can appear after the resolution.","E. It can connect the story to a broader lesson.","ABDE","C3","P3","Moral Value"],
+["multi","Which questions help identify orientation?","A. Who is involved?","B. Where does it happen?","C. When does it happen?","D. What is the final lesson?","E. What is the initial situation?","ABCE","C3","P1","Reading"],
+["multi","Which questions help analyze complication?","A. What problem appears?","B. What causes tension?","C. What blocks the character’s goal?","D. What moral does the reader learn at the end?","E. What changes the initial situation?","ABCE","C4","P2","Plot Analysis"],
+["multi","Which statements show careful structure analysis?","A. A paragraph can contain more than one function.","B. Evidence from events matters.","C. The longest paragraph is always the complication.","D. A coda is optional.","E. A resolution can be surprising.","ABDE","C4","P1","Critical Thinking"],
+["multi","Which revisions would improve a confusing narrative structure?","A. Add a clear initial situation.","B. Make the central problem visible.","C. Add a logical consequence to the resolution.","D. Insert unrelated events.","E. Use transitions to show time and cause.","ABCE","C5","P1","Creative Thinking"],
+["multi","Which endings could work as a coda?","A. “From that day, the villagers valued cooperation.”","B. “The experience taught her to listen.”","C. “The next morning, another unrelated hero arrived.”","D. “They never forgot the lesson.”","E. “The story reminded them to be honest.”","ABDE","C5","P3","Moral Value"],
+["multi","Which outline would create a coherent short legend?","A. Local place → unusual event → conflict → resolution → cultural lesson","B. Random magic → unrelated character → ending","C. Community tradition → problem → collective action → reflection","D. Character list → dictionary → recipe","E. Real setting → fictional event → consequence → coda","ACE","C6","P3","Creative Thinking"],
+["tf","Orientation normally introduces the initial situation.","True","C1","P1","Generic Structure"],
+["tf","Complication is the part where the central problem is created or developed.","True","C1","P2","Plot Analysis"],
+["tf","Resolution must always be happy.","False","C2","P2","Reading"],
+["tf","A coda can connect a story to a moral lesson.","True","C3","P3","Moral Value"],
+["tf","The longest paragraph is automatically the complication.","False","C4","P1","Critical Thinking"],
+["match","Orientation","Introduction of characters, setting, and initial situation.","C1","P1","Generic Structure"],
+["match","Complication","Development of the central problem or conflict.","C1","P2","Generic Structure"],
+["match","Resolution","How the central problem is addressed.","C2","P2","Generic Structure"],
+["match","Coda","Optional reflection or moral comment after the resolution.","C3","P3","Moral Value"],
+["match","Transition","A word or phrase that helps connect events or ideas.","C4","P5","Vocabulary"]
+],
+/* meeting 3 */
+[
+["mc","Who usually drives the main action in a narrative?","A. Main character","B. Setting","C. Title","D. Narrator’s dictionary","E. Audience only","A","C1","P1","Character Analysis"],
+["mc","What is included in setting?","A. Place and time","B. Answer key","C. Moral only","D. Author’s age","E. Vocabulary score","A","C1","P1","Reading"],
+["mc","What is plot development mainly about?","A. How events develop through cause and effect","B. How many adjectives appear","C. How the title is printed","D. How readers memorize words","E. How long the story is","A","C2","P1","Plot Analysis"],
+["mc","Which is an internal conflict?","A. A hero struggles with jealousy.","B. A bridge collapses.","C. A dragon blocks a road.","D. Two villages fight.","E. A storm destroys a boat.","A","C2","P2","Character Analysis"],
+["mc","Why can setting affect a character’s decision?","A. It can create opportunities, risks, or limitations.","B. It changes the spelling of names.","C. It removes all conflict.","D. It guarantees a happy ending.","E. It replaces the main character.","A","C2","P1","Plot Analysis"],
+["mc","In Seno’s story, the river at midnight mainly creates...","A. Suspense","B. Comedy only","C. A scientific report","D. A shopping scene","E. A classroom routine","A","C1","P1","Setting"],
+["mc","Why is Tomas a supporting character in Elara’s story?","A. He provides knowledge that helps Elara.","B. He causes every event alone.","C. He is the narrator.","D. He owns the kingdom.","E. He replaces Elara.","A","C3","P2","Character Analysis"],
+["mc","What causes the change in Raka’s behavior?","A. He understands his jealousy and receives an opportunity to change.","B. He wins a competition.","C. The market disappears.","D. The rabbit leaves forever.","E. A storm destroys the shop.","A","C3","P4","Character Analysis"],
+["mc","Which event is the climax in Wira and Sari’s story?","A. Sari lives with Wira.","B. The storm begins.","C. The emergency lantern guides the boat.","D. They discuss electricity.","E. The lighthouse is introduced.","C","C3","P1","Plot Analysis"],
+["mc","Which analysis best explains Seno’s internal conflict?","A. He must decide whether to respect tradition while examining evidence.","B. He must choose a new school.","C. He wants to buy a boat.","D. He dislikes the river’s color.","E. He wants to become a fisherman.","A","C4","P4","Critical Thinking"],
+["multi","Which can be classified as supporting characters?","A. Timo in Nara’s story","B. Tomas in Elara’s story","C. Harbor workers in Wira’s story","D. The main protagonist","E. A helper who influences the hero","ABCE","C1","P1","Character Analysis"],
+["multi","Which are types of conflict?","A. Internal","B. Character vs character","C. Character vs society","D. Character vs nature","E. Character vs punctuation","ABCD","C1","P1","Plot Analysis"],
+["multi","Which are elements of setting?","A. Time","B. Place","C. Social environment","D. Character goal","E. Atmosphere","ABCE","C2","P1","Setting"],
+["multi","Which events develop plot in Nara’s story?","A. The spring becomes weak.","B. Nara finds a blocked channel.","C. She receives a safety warning.","D. She organizes safe cooperation.","E. She buys a new dress.","ABCD","C2","P3","Plot Analysis"],
+["multi","Which details show Elara’s leadership development?","A. She first wants to act immediately.","B. She listens to Tomas.","C. She uses an old map.","D. She refuses all advice.","E. She changes her plan based on evidence.","ABCE","C3","P4","Character Analysis"],
+["multi","Which evidence supports the claim that Raka’s conflict is internal as well as external?","A. He envies the rabbit.","B. He wants success.","C. He chooses a dishonest method.","D. The market exists.","E. He later admits his jealousy.","ABCE","C4","P4","Critical Thinking"],
+["multi","Which setting choices increase suspense?","A. Midnight","B. A violent storm","C. A remote lighthouse","D. A quiet sunny classroom","E. A dangerous river","ABCE","C4","P1","Setting"],
+["multi","Which changes could make Wira’s story more complex without destroying its plot?","A. Sari must choose between two repair methods.","B. The fishermen disagree about risk.","C. The storm becomes a symbol of uncertainty.","D. Remove all conflict.","E. Add a past disagreement between Wira and Sari.","ABCE","C5","P4","Creative Thinking"],
+["multi","Which new plot ideas could show responsible leadership?","A. A leader consults experts.","B. A protagonist admits a mistake.","C. A team uses evidence before acting.","D. A hero ignores everyone and is praised automatically.","E. A character changes after seeing consequences.","ABCE","C6","P4","Creative Thinking"],
+["tf","A main character must always be morally perfect.","False","C1","P4","Character Analysis"],
+["tf","Setting includes time and place.","True","C1","P1","Setting"],
+["tf","An internal conflict happens only between two characters.","False","C2","P2","Character Analysis"],
+["tf","Plot can be understood through cause and effect.","True","C3","P1","Plot Analysis"],
+["tf","A supporting character can influence the protagonist’s development.","True","C4","P2","Character Analysis"],
+["match","Main character","The character whose choices most strongly drive the central story.","C1","P1","Character Analysis"],
+["match","Supporting character","A character who assists, challenges, or influences the main character.","C1","P2","Character Analysis"],
+["match","Setting","The time, place, and surrounding conditions of a story.","C2","P1","Setting"],
+["match","Internal conflict","A struggle within a character’s thoughts, feelings, or values.","C3","P4","Character Analysis"],
+["match","Climax","A major turning point where tension reaches a high level.","C4","P1","Plot Analysis"]
+],
+/* meeting 4 */
+[
+["mc","What is a moral lesson?","A. An idea about values, choices, or consequences.","B. A list of characters.","C. A setting description.","D. A grammar rule.","E. A title.","A","C1","P3","Moral Value"],
+["mc","Why should cultural values be read in context?","A. Values can be shaped by community traditions and circumstances.","B. Culture never matters.","C. Every culture has identical practices.","D. Stories are scientific reports.","E. Context removes meaning.","A","C2","P3","Critical Thinking"],
+["mc","Which factor is useful when evaluating a character’s decision?","A. Intention and consequences","B. Font size","C. Number of pages","D. The title only","E. Reader’s favorite color","A","C2","P4","Critical Thinking"],
+["mc","What does perspective analysis ask?","A. How the story might look from another character’s viewpoint.","B. How many commas are used.","C. Where the book was printed.","D. How fast to read.","E. Whether every event is factual.","A","C1","P4","Critical Thinking"],
+["mc","Why is Hana’s decision more complex than simply “be generous”?","A. She considers how much her family can reasonably share.","B. She refuses to help.","C. She gives away everything.","D. She dislikes travelers.","E. She ignores consequences.","A","C3","P4","Moral Value"],
+["mc","What does Lani learn after seeing the farmer?","A. Her personal desire can affect another person’s survival.","B. Gold fruit has no value.","C. Lina is always right.","D. Magic should be destroyed.","E. Farmers should leave the village.","A","C3","P2","Perspective"],
+["mc","What is the chief’s major leadership mistake?","A. He ignores an expert’s safety warning.","B. He builds a bridge.","C. He asks for help.","D. He repairs the bridge.","E. He protects villagers.","A","C3","P4","Critical Thinking"],
+["mc","Why is the giant in The Glass Mountain not simply a villain?","A. His action is partly motivated by previous theft.","B. He has no conflict.","C. He is the narrator.","D. He never speaks.","E. He destroys the mountain.","A","C4","P2","Perspective"],
+["mc","Which solution in the community garden story best demonstrates critical thinking?","A. Choosing Arif’s idea without discussion","B. Choosing Bayu’s idea because it is prettier","C. Interviewing residents and combining needs","D. Asking an unrelated person","E. Ending the project","C","C4","P4","Critical Thinking"],
+["mc","Which statement is the most balanced evaluation of Hana?","A. She is generous, but her decision should still consider family needs.","B. She is perfect in every situation.","C. She is selfish.","D. She should never help strangers.","E. She ignores responsibility completely.","A","C5","P4","Moral Value"],
+["multi","Which can be evidence for a moral lesson?","A. A character’s choice","B. Consequences","C. Repeated values in the story","D. A reader’s unsupported guess","E. The resolution","ABCE","C1","P3","Moral Value"],
+["multi","Which factors can help evaluate a decision fairly?","A. Intention","B. Available information","C. Consequences","D. Alternatives","E. Character’s clothing","ABCD","C2","P4","Critical Thinking"],
+["multi","Which perspectives are useful in the Glass Mountain story?","A. Noor’s","B. The giant’s","C. The families needing medicine","D. A random tourist with no role","E. A person protecting resources","ABCE","C2","P2","Perspective"],
+["multi","Which cultural values may appear in community stories?","A. Cooperation","B. Hospitality","C. Respect","D. Responsibility","E. Winning at any cost","ABCD","C3","P3","Moral Value"],
+["multi","Which actions in the stories show empathy?","A. Hana shares food.","B. Lani considers the farmer’s needs.","C. Noor listens to the giant.","D. The chief ignores the builder.","E. Students interview residents.","ABCE","C3","P2","Empathy"],
+["multi","Which are strong critical questions about a moral lesson?","A. Who benefits from the decision?","B. What are the consequences?","C. Was there another reasonable option?","D. Does the story provide evidence?","E. Which character has the nicest name?","ABCD","C4","P4","Critical Thinking"],
+["multi","Which comparisons between the stories are defensible?","A. Both show that listening can improve decisions.","B. Both involve communities.","C. All conflicts are solved by magic.","D. Both show consequences of choices.","E. Both require perspective-taking.","ABDE","C5","P4","Critical Thinking"],
+["multi","Which real-life situations could use the lesson of the garden story?","A. Group project disagreements","B. Planning a school event","C. Sharing classroom resources","D. Choosing a team color only","E. Resolving different community needs","ABCE","C5","P5","Moral Value"],
+["multi","Which creative reinterpretations preserve the central values?","A. A school council listens to students before changing a rule.","B. A community shares water during a drought.","C. A leader asks experts before building a bridge.","D. A character solves every problem by insulting others.","E. A group combines two competing plans.","ABCE","C6","P5","Creative Thinking"],
+["tf","A moral lesson should be supported by evidence from the story.","True","C1","P3","Moral Value"],
+["tf","Perspective analysis means accepting every character’s decision as correct.","False","C2","P4","Critical Thinking"],
+["tf","A character can make a poor decision and still have understandable motives.","True","C3","P2","Character Analysis"],
+["tf","Cultural context can influence how readers interpret a story.","True","C4","P3","Critical Thinking"],
+["tf","Comparing stories means deciding which story is objectively better.","False","C5","P4","Critical Thinking"],
+["match","Moral value","A positive principle or lesson suggested by choices and consequences.","C1","P3","Moral Value"],
+["match","Perspective","A character’s or reader’s point of view.","C1","P4","Critical Thinking"],
+["match","Empathy","Understanding another person’s feelings or situation.","C2","P2","Empathy"],
+["match","Consequence","A result that follows an action or decision.","C3","P4","Plot Analysis"],
+["match","Evaluation","A reasoned judgment based on evidence and criteria.","C4","P4","Critical Thinking"]
+],
+/* meeting 5 */
+[
+["mc","What is the first useful step in planning a story?","A. Create a story map.","B. Delete the conflict.","C. Add random characters.","D. Write the final sentence only.","E. Choose a font.","A","C1","P1","Creative Thinking"],
+["mc","What should good dialogue usually do?","A. Reveal character or move the plot.","B. Repeat the setting.","C. Replace every action.","D. Explain grammar rules.","E. Avoid all disagreement.","A","C1","P5","Creative Thinking"],
+["mc","What makes an alternative ending effective?","A. It grows logically from the existing story.","B. It introduces unrelated events only.","C. It removes all characters.","D. It ignores the conflict.","E. It changes the title only.","A","C2","P1","Creative Writing"],
+["mc","What feature helps a legend feel connected to a community?","A. A recognizable place or tradition.","B. A random planet.","C. A shopping list.","D. A scientific formula.","E. A grammar table.","A","C2","P3","Creative Writing"],
+["mc","Why did Kiran use a story map?","A. To connect the character goal, conflict, events, and resolution.","B. To memorize vocabulary only.","C. To remove imagination.","D. To shorten every sentence.","E. To copy another story.","A","C2","P1","Creative Writing"],
+["mc","Which dialogue is most respectful?","A. “Your idea is stupid.”","B. “I disagree, but could we examine another option?”","C. “Be quiet and listen to me.”","D. “You never understand anything.”","E. “I will win because I am better.”","B","C3","P5","Grammar"],
+["mc","Which change creates Malik’s alternative ending?","A. The hero chooses negotiation instead of fighting.","B. The hero disappears before the conflict.","C. A new unrelated dragon appears.","D. The setting becomes a school with no explanation.","E. The villain wins without cause.","A","C3","P4","Creative Writing"],
+["mc","Which detail makes Sita’s story a legend rather than a generic fairy tale?","A. The story connects a fictional event with a recognizable local hill and tradition.","B. It has a princess.","C. It contains a dialogue.","D. It has a moral.","E. It has a conflict.","A","C4","P3","Creative Writing"],
+["mc","What does Edo’s dialogue reveal about Mira?","A. She wants help but also wants to become independent.","B. She hates stars.","C. She has no problem.","D. She is the villain.","E. She refuses all advice.","A","C4","P2","Character Analysis"],
+["mc","Why is the school-tree story a strong example of creative thinking?","A. It combines a fictional legend with evidence-based community action.","B. It removes all conflict.","C. It copies a fairy tale exactly.","D. It uses only magical events.","E. It avoids dialogue.","A","C5","P5","Creative Thinking"],
+["multi","Which items belong in a story map?","A. Character goal","B. Conflict","C. Key events","D. Resolution","E. Student attendance","ABCD","C1","P1","Creative Writing"],
+["multi","Which are functions of dialogue?","A. Reveal personality","B. Show disagreement","C. Move the plot","D. Build relationships","E. Replace all setting descriptions","ABCD","C2","P5","Creative Writing"],
+["multi","Which features support a fairy-tale draft?","A. Magical element","B. Imaginative setting","C. Clear conflict","D. Meaningful consequence","E. Random facts unrelated to the plot","ABCD","C3","P1","Creative Writing"],
+["multi","Which features support a legend draft?","A. Recognizable place","B. Community memory","C. Fictional explanation","D. Cultural tradition","E. Mandatory scientific proof","ABCD","C3","P3","Creative Writing"],
+["multi","Which revisions can improve a weak story?","A. Clarify the protagonist’s goal.","B. Strengthen cause and effect.","C. Remove unrelated events.","D. Add a meaningful resolution.","E. Add as many characters as possible.","ABCD","C4","P1","Creative Writing"],
+["multi","Which dialogue choices are polite?","A. “Could we consider another idea?”","B. “I see your point, but I have a concern.”","C. “You are always wrong.”","D. “Would you explain your reason?”","E. “Let’s find a solution together.”","ABDE","C4","P5","Grammar"],
+["multi","Which alternative endings are logically connected to the original conflicts?","A. A jealous character learns to cooperate.","B. A hero negotiates after discovering a hidden motive.","C. A bridge problem is solved through safe cooperation.","D. A random spaceship appears without setup.","E. A rumor is corrected through evidence.","ABCE","C5","P4","Creative Writing"],
+["multi","Which ideas could become original fairy tales?","A. A mirror showing consequences","B. A tree that speaks only to honest children","C. A cloud that stores forgotten promises","D. A magical object that creates random disasters with no meaning","E. A village where dreams become maps","ABCE","C6","P3","Creative Thinking"],
+["multi","Which ideas could become original legends?","A. A hill linked to a fictional guardian","B. A local river linked to a community tradition","C. An old school tree with a fictional origin","D. A completely imaginary planet with no community link","E. A traditional festival explained through a fictional ancestor","ABCE","C6","P3","Creative Writing"],
+["tf","A story map can help writers organize cause and effect.","True","C1","P1","Creative Writing"],
+["tf","Good dialogue should always be rude when characters disagree.","False","C1","P5","Grammar"],
+["tf","An alternative ending should still be consistent with important earlier details.","True","C2","P1","Creative Writing"],
+["tf","A legend can use fictional elements while connecting to a recognizable place or cultural memory.","True","C3","P3","Creative Writing"],
+["tf","Creative writing means adding random events without considering coherence.","False","C4","P1","Creative Thinking"],
+["match","Story map","A planning tool that organizes characters, goals, conflict, events, and resolution.","C1","P1","Creative Writing"],
+["match","Dialogue","Spoken interaction between characters.","C1","P5","Grammar"],
+["match","Alternative ending","A new conclusion that changes the outcome while remaining coherent.","C2","P4","Creative Writing"],
+["match","Fairy tale","A fictional narrative often using magic and imaginative elements.","C3","P1","Reading"],
+["match","Legend draft","A creative narrative connected to a recognizable place, tradition, or cultural memory.","C4","P3","Creative Writing"]
+]
+];
+
+/* 5 stimuli x 5 questions: each block gets its own stimulus. */
+const stimuli = stories.map((arr)=>arr.map((text,i)=>({id:i+1,text})));
+
+let current=0,slide=0,answers={},submitted=false;
+const access=Object.fromEntries(meetings.map((m,i)=>[m.access,i]));
+const teacherCode="kuncimasterguru";
+const bloomDist=["C1","C2","C3","C4","C5","C6"];
+function toggleDark(){document.body.classList.toggle("dark");localStorage.setItem("dark",document.body.classList.contains("dark"))}
+if(localStorage.getItem("dark")==="true")document.body.classList.add("dark");
+
+function login(){
+ const n=document.getElementById("studentName").value.trim(),c=document.getElementById("studentClass").value,code=document.getElementById("accessCode").value.trim();
+ if(code===teacherCode){showTeacher();return}
+ if(!n||n!==n.toUpperCase()||!c){document.getElementById("loginMsg").textContent="Lengkapi nama dengan HURUF KAPITAL dan pilih kelas.";return}
+ if(access[code]===undefined){document.getElementById("loginMsg").textContent="KODE AKSES SALAH!";return}
+ current=access[code];document.getElementById("login").classList.add("hidden");document.getElementById("app").classList.remove("hidden");slide=0;answers={};submitted=false;renderMeeting();
+}
+function renderMeeting(){
+ const m=meetings[current];document.getElementById("meetingPill").textContent=`Pertemuan ${current+1} • ${m.selis}`;
+ document.getElementById("meetingTitle").textContent=m.title;document.getElementById("meetingTarget").textContent="Target: "+m.target;
+ const wrap=document.getElementById("slides");wrap.innerHTML="";
+ m.slides.forEach((s,i)=>{const d=document.createElement("div");d.className="card slide"+(i===0?" active":"");d.innerHTML=`<span class="pill">Slide ${i+1}</span><h2>${s[0]}</h2><p>${s[1]}</p>${i===4?`<div class="success">Materi inti selesai. Buka LKPD untuk mengerjakan 30 soal.</div>`:""}<div class="nav"><button class="btn" onclick="changeSlide(-1)">← Sebelumnya</button><button class="btn primary" onclick="changeSlide(1)">${i===4?"Selesai Materi →":"Selanjutnya →"}</button></div>`;wrap.appendChild(d)});
+ updateSlide();document.getElementById("unlock").classList.add("hidden");document.getElementById("worksheet").classList.add("hidden");document.getElementById("result").classList.add("hidden");
+}
+function changeSlide(dir){if(dir>0&&slide===4){document.getElementById("unlock").classList.remove("hidden");document.getElementById("unlock").scrollIntoView({behavior:"smooth"});return}slide=Math.max(0,Math.min(4,slide+dir));updateSlide()}
+function updateSlide(){document.querySelectorAll(".slide").forEach((x,i)=>x.classList.toggle("active",i===slide));document.getElementById("slideBar").style.width=((slide+1)/5*100)+"%";document.getElementById("slideCount").textContent=`Slide ${slide+1} dari 5`}
+function unlockLKPD(){
+ const code=document.getElementById("lcode").value.trim();
+ const now=new Date(),dd=String(now.getDate()).padStart(2,"0"),mm=String(now.getMonth()+1).padStart(2,"0"),yy=String(now.getFullYear()).slice(-2),expected=dd+mm+yy+"peace";
+ if(code!==expected){document.getElementById("unlockMsg").textContent="Kode akses tidak valid.";return}
+ document.getElementById("unlock").classList.add("hidden");renderQuestions();
+}
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+function renderQuestions(){
+ const qs=questionBanks[current],box=document.getElementById("worksheet");box.classList.remove("hidden");
+ let html=`<div class="card"><h2>LKPD — Pertemuan ${current+1}</h2><p><b>${esc(meetings[current].title)}</b></p><p class="small">30 soal • 10 pilihan ganda • 10 pilihan ganda kompleks • 5 true/false • 5 matching</p>`;
+ for(let i=0;i<30;i++){
+   if(i%5===0)html+=`<div class="stimulus"><b>Stimulus ${i/5+1}</b><p>${esc(stimuli[current][i/5].text)}</p></div>`;
+   const q=qs[i],num=i+1;html+=`<div class="q"><h4>${num}. ${esc(q[1])}</h4>`;
+   if(q[0]==="mc")["A","B","C","D","E"].forEach((o,j)=>html+=`<label class="option"><input type="radio" name="q${num}" value="${o}"> <b>${o}.</b> ${esc(q[2+j])}</label>`);
+   else if(q[0]==="multi")["A","B","C","D","E"].forEach((o,j)=>html+=`<label class="option"><input type="checkbox" name="q${num}" value="${o}"> <b>${o}.</b> ${["Characters","Setting","Plot","Conflict","Scientific data"][j]}</label>`);
+   else if(q[0]==="tf"){html+=`<label class="option"><input type="radio" name="q${num}" value="True"> True</label><label class="option"><input type="radio" name="q${num}" value="False"> False</label>`}
+   else {const opts=[q[2],q[2],q[2],q[2],q[2]]; /* labels replaced below */ const map=["A","B","C","D","E"]; const desc=matchingOptions(current,i-26);html+=`<select name="q${num}"><option value="">Choose a match</option>${desc.map((x,k)=>`<option value="${map[k]}">${map[k]}. ${esc(x)}</option>`).join("")}</select>`}
+   html+=`</div>`;
+ }
+ html+=`<button class="btn primary" onclick="checkResult()">Cek Hasil</button><div id="submitMsg" class="error"></div></div>`;
+ box.innerHTML=html;box.scrollIntoView({behavior:"smooth"});
+}
+function matchingOptions(mi,idx){
+ const arr=questionBanks[mi].slice(25,30).map(q=>q[2]);
+ return arr.map((x,i)=>x);
+}
+function selected(i){
+ const q=questionBanks[current][i],name="q"+(i+1);
+ if(q[0]==="multi")return [...document.querySelectorAll(`input[name="${name}"]:checked`)].map(x=>x.value).sort().join("");
+ if(q[0]==="match")return document.querySelector(`select[name="${name}"]`)?.value||"";
+ return document.querySelector(`input[name="${name}"]:checked`)?.value||"";
+}
+function checkResult(){
+ const key=`submitted_${document.getElementById("studentName").value}_${current}`;
+ if(localStorage.getItem(key)){document.getElementById("submitMsg").textContent="Pengumpulan untuk pertemuan ini sudah pernah dilakukan.";return}
+ const qs=questionBanks[current];let correct=[],wrong=[];qs.forEach((q,i)=>{const a=selected(i),k=q[q[0]==="mc"?7:q[0]==="multi"?7:q[0]==="tf"?2:3]; if(a===k)correct.push(i+1);else wrong.push(i+1)});
+ const score=Math.round(correct.length/30*100);localStorage.setItem(key,"1");submitted=true;showResult(score,correct,wrong);
+ sendToSheet(score,correct,wrong);
+}
+function levelList(nums){return [...new Set(nums.map(n=>questionBanks[current][n-1][questionBanks[current][n-1][0]==="mc"?8:questionBanks[current][n-1][0]==="multi"?8:questionBanks[current][n-1][0]==="tf"?3:4]))].join(", ")||"—"}
+function competencyScores(correct){
+ const cats=["Reading","Vocabulary","Grammar","Critical Thinking","Creative Writing","Generic Structure","Character Analysis","Plot Analysis","Moral Value","Setting","Empathy"];
+ const out={};cats.forEach(c=>{const ids=questionBanks[current].map((q,i)=>q[questionBanks[current][i][0]==="mc"?9:questionBanks[current][i][0]==="multi"?9:questionBanks[current][i][0]==="tf"?4:5]===c?i+1:null).filter(Boolean);out[c]=ids.length?Math.round(ids.filter(i=>correct.includes(i)).length/ids.length*100):null});return out
+}
+function catLabel(s){return s>=86?"Excellent":s>=71?"Good":s>=56?"Fair":"Needs Improvement"}
+function showResult(score,correct,wrong){
+ const pos=levelList(correct),neg=levelList(wrong),box=document.getElementById("result"),cs=competencyScores(correct);
+ box.classList.remove("hidden");box.innerHTML=`<div class="card resultbox"><h2>Hasil Evaluasi</h2><div class="grid"><div><b>Nama</b><br>${esc(document.getElementById("studentName").value)}</div><div><b>Kelas</b><br>${esc(document.getElementById("studentClass").value)}</div><div><b>Pertemuan</b><br>${current+1}</div><div><b>Skor</b><br><span class="score">${score}</span></div></div>
+ <hr><h3>Analisis Bloom</h3><p><b>Soal Benar:</b> ${correct.join(", ")||"—"}</p><p><b>Menguasai Level:</b> ${pos}</p><p><b>Soal Salah:</b> ${wrong.join(", ")||"—"}</p><p><b>Kurang Menguasai Level:</b> ${neg}</p>
+ <h3>Analisis Kompetensi Bahasa Inggris</h3><table><tr><th>Kompetensi</th><th>Persentase</th><th>Kategori</th></tr>${["Reading","Vocabulary","Grammar","Critical Thinking","Creative Writing"].map(c=>`<tr><td>${c} Skill Mastery</td><td>${cs[c]??0}%</td><td>${catLabel(cs[c]??0)}</td></tr>`).join("")}</table>
+ <p class="small">Kategori: Excellent (86–100), Good (71–85), Fair (56–70), Needs Improvement (≤55).</p></div>`;box.scrollIntoView({behavior:"smooth"});
+}
+function sendToSheet(score,correct,wrong){
+ const endpoint="https://script.google.com/xxxxxx";
+ const data={nama_sheet:"Legend & Fairy Tale",kelas:document.getElementById("studentClass").value,pertemuan_ke:current+1,nama:document.getElementById("studentName").value,skor:score,analisis_positif:`Soal Benar: ${correct.join(", ")} | Menguasai Level: ${levelList(correct)}`,analisis_negatif:`Soal Salah: ${wrong.join(", ")} | Kurang Menguasai Level: ${levelList(wrong)}`};
+ if(endpoint.includes("xxxxxx"))return;
+ fetch(endpoint,{method:"POST",mode:"no-cors",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)}).catch(()=>{});
+}
+function showTeacher(){
+ document.getElementById("login").classList.add("hidden");document.getElementById("app").classList.add("hidden");const t=document.getElementById("teacher");t.classList.remove("hidden");
+ let html="<h1>👩‍🏫 Dashboard Guru</h1><p>Rekap kunci jawaban, Bloom, SELIS, dan distribusi kompetensi.</p>";
+ meetings.forEach((m,mi)=>{html+=`<div class="card"><h2>Pertemuan ${mi+1}</h2><table><tr><th>No.</th><th>Kunci</th><th>Bloom</th><th>SELIS</th><th>Kompetensi</th></tr>`;
+ questionBanks[mi].forEach((q,i)=>{const key=q[q[0]==="mc"?7:q[0]==="multi"?7:q[0]==="tf"?2:3],bl=q[q[0]==="mc"?8:q[0]==="multi"?8:q[0]==="tf"?3:4],se=q[q[0]==="mc"?9:q[0]==="multi"?9:q[0]==="tf"?4:5],co=q[q[0]==="mc"?10:q[0]==="multi"?10:q[0]==="tf"?5:6];html+=`<tr><td>${i+1}</td><td>${esc(key)}</td><td>${bl}</td><td>${se}</td><td>${esc(co)}</td></tr>`});html+="</table>";
+ html+="<h3>Distribusi Bloom</h3><p>"+bloomDist.map(b=>`${b}: ${questionBanks[mi].filter(q=>q[q[0]==="mc"?8:q[0]==="multi"?8:q[0]==="tf"?3:4]===b).length} soal`).join(" • ")+"</p>";
+ html+="<h3>Distribusi SELIS</h3><p>"+["P1","P2","P3","P4","P5"].map(p=>`${p}: ${questionBanks[mi].filter(q=>q[q[0]==="mc"?9:q[0]==="multi"?9:q[0]==="tf"?4:5].startsWith(p)).length} soal`).join(" • ")+"</p></div>"});
+ t.innerHTML=html;
+}
+</script>
+</body>
+</html>
