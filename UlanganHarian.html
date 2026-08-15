@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>UH Bahasa Inggris</title>
+</head>
+
+<body>
+
+<h2>Ulangan Harian</h2>
+
+<input
+id="nama"
+placeholder="Nama">
+
+<br><br>
+
+<input
+id="kelas"
+placeholder="Kelas">
+
+<br><br>
+
+<p>
+1. What is the synonym of happy?
+</p>
+
+<input
+type="radio"
+name="q1"
+value="A">
+
+Sad
+
+<br>
+
+<input
+type="radio"
+name="q1"
+value="B">
+
+Joyful
+
+<br>
+
+<input
+type="radio"
+name="q1"
+value="C">
+
+Angry
+
+<br><br>
+
+<button onclick="submitQuiz()">
+
+Kirim
+
+</button>
+
+<script>
+
+function submitQuiz(){
+
+ let nilai=0;
+
+ const jawaban=
+ document.querySelector(
+ 'input[name="q1"]:checked'
+ );
+
+ if(
+ jawaban &&
+ jawaban.value==="B"
+ ){
+   nilai=100;
+ }
+
+ alert(
+ "Nilai Anda: "
+ + nilai
+ );
+
+}
+
+</script>
+
+</body>
+</html>
