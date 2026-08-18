@@ -196,7 +196,9 @@ th{background:#eef2ff}
 <section class="card">
   <h2>Save / Print Your Work</h2>
   <div class="actions">
-    <button class="action" onclick="saveData()">💾 Save Progress</button>
+    <button class="action gold" onclick="submitAssessment()">
+  📤 Submit Assessment
+</button>
     <button class="action secondary" onclick="loadData()">↻ Load Progress</button>
     <button class="action secondary" onclick="window.print()">🖨 Print / Save PDF</button>
     <button class="action" onclick="clearData()">Clear Form</button>
@@ -321,6 +323,94 @@ window.addEventListener("scroll",()=>{
   const h=document.documentElement.scrollHeight-window.innerHeight;
   document.getElementById("progress").style.width=(h>0?(scrollY/h)*100:0)+"%";
 });
+const GOOGLE_SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbzvdHZKdLAQ4w0f9jZtNsj1V03X4f13NVgnogcnmU8f/dev";
+
+async function submitAssessment() {
+
+  const selectedSkills = [
+    ...document.querySelectorAll('.skill input:checked')
+  ].map(x => x.value);
+
+  const data = {
+
+    name: val("name"),
+    age: val("age"),
+    school: val("school"),
+    major: val("major"),
+
+    who: val("who"),
+    study: val("study"),
+    interest: val("interest"),
+    goalA: val("goalA"),
+
+    skills: selectedSkills.join(", "),
+
+    skillExample1: val("skillExample1"),
+    skillExample2: val("skillExample2"),
+    skillExample3: val("skillExample3"),
+
+    organization: val("organization"),
+    position: val("position"),
+    responsibilities: val("responsibilities"),
+
+    achievement: val("achievement"),
+    year: val("year"),
+    achievementDesc: val("achievementDesc"),
+
+    career: val("career"),
+    whyCareer: val("whyCareer"),
+    steps: val("steps"),
+
+    script: document.getElementById("scriptOutput").textContent,
+
+    content: Number(val("s1")) || 0,
+    vocabulary: Number(val("s2")) || 0,
+    grammar: Number(val("s3")) || 0,
+    pronunciation: Number(val("s4")) || 0,
+
+    total: Number(document.getElementById("totalScore").textContent) || 0
+  };
+
+  if (!data.name) {
+    showToast("Please enter your name first.");
+    return;
+  }
+
+  if (!data.school) {
+    showToast("Please enter your school.");
+    return;
+  }
+
+  if (!data.script ||
+      data.script.includes("will appear here")) {
+
+    showToast("Please generate your script first.");
+    return;
+  }
+
+  try {
+
+    showToast("Submitting assessment...");
+
+    await fetch(GOOGLE_SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
+      body: JSON.stringify(data)
+    });
+
+    showToast("✅ Assessment submitted successfully!");
+
+  } catch (error) {
+
+    console.error(error);
+    showToast("❌ Failed to submit assessment.");
+
+  }
+}
 </script>
 </body>
 </html>
