@@ -197,8 +197,8 @@ th{background:#eef2ff}
   <h2>Save / Print Your Work</h2>
   <div class="actions">
     <button class="action gold" onclick="submitAssessment()">
-  📤 Submit Assessment
-</button>
+      📤 Submit Assessment
+    </button>
     <button class="action secondary" onclick="loadData()">↻ Load Progress</button>
     <button class="action secondary" onclick="window.print()">🖨 Print / Save PDF</button>
     <button class="action" onclick="clearData()">Clear Form</button>
@@ -209,6 +209,8 @@ th{background:#eef2ff}
 <div class="toast" id="toast"></div>
 
 <script>
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzvdHZKdLAQ4w0f9jZtNsj1V03X4f13NVgnogcnmU8f/dev";
+
 const hard = ["Microsoft Office","Graphic Design","Public Speaking","English Communication","Writing","Programming","Video Editing","Social Media Management","Data Analysis","Other"];
 const soft = ["Communication","Teamwork","Leadership","Problem Solving","Time Management","Adaptability","Creativity","Responsibility","Critical Thinking","Self-Confidence"];
 
@@ -292,6 +294,7 @@ function saveData(){
   localStorage.setItem("professionalSelfIntro",JSON.stringify(data));
   showToast("Progress saved on this device.");
 }
+
 function loadData(){
   const raw=localStorage.getItem("professionalSelfIntro");
   if(!raw) return showToast("No saved progress found.");
@@ -304,6 +307,7 @@ function loadData(){
   document.getElementById("skillCount").textContent=document.querySelectorAll('.skill input:checked').length;
   calculate(); showToast("Progress loaded.");
 }
+
 function clearData(){
   if(!confirm("Clear all answers?")) return;
   document.querySelectorAll("input,textarea").forEach(x=>x.value="");
@@ -314,26 +318,25 @@ function clearData(){
   document.getElementById("scriptOutput").textContent="Your personalized professional self-introduction will appear here.";
   localStorage.removeItem("professionalSelfIntro");
 }
+
 function goTo(id){document.getElementById(id).scrollIntoView({behavior:"smooth",block:"start"})}
+
 function showToast(msg){
   const t=document.getElementById("toast"); t.textContent=msg;t.style.display="block";
   setTimeout(()=>t.style.display="none",2200);
 }
+
 window.addEventListener("scroll",()=>{
   const h=document.documentElement.scrollHeight-window.innerHeight;
   document.getElementById("progress").style.width=(h>0?(scrollY/h)*100:0)+"%";
 });
-const GOOGLE_SCRIPT_URL =
-  https://script.google.com/macros/s/AKfycbzvdHZKdLAQ4w0f9jZtNsj1V03X4f13NVgnogcnmU8f/dev;
 
 async function submitAssessment() {
-
   const selectedSkills = [
     ...document.querySelectorAll('.skill input:checked')
   ].map(x => x.value);
 
   const data = {
-
     name: val("name"),
     age: val("age"),
     school: val("school"),
@@ -382,15 +385,12 @@ async function submitAssessment() {
     return;
   }
 
-  if (!data.script ||
-      data.script.includes("will appear here")) {
-
+  if (!data.script || data.script.includes("will appear here")) {
     showToast("Please generate your script first.");
     return;
   }
 
   try {
-
     showToast("Submitting assessment...");
 
     await fetch(GOOGLE_SCRIPT_URL, {
@@ -405,10 +405,8 @@ async function submitAssessment() {
     showToast("✅ Assessment submitted successfully!");
 
   } catch (error) {
-
     console.error(error);
     showToast("❌ Failed to submit assessment.");
-
   }
 }
 </script>
