@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Professional Self-Introduction - Interactive LKPD</title>
+<style>
+:root{
+  --navy:#0b1f3a; --blue:#2563eb; --gold:#f4b400; --light:#f5f7fb;
+  --white:#fff; --text:#1f2937; --muted:#64748b; --green:#16a34a; --red:#dc2626;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--light);color:var(--text);line-height:1.6}
+header{background:linear-gradient(135deg,var(--navy),#173d70);color:#fff;padding:42px 20px}
+.container{max-width:1050px;margin:auto}
+header h1{margin:0 0 8px;font-size:clamp(28px,5vw,44px)}
+header p{margin:0;color:#dbeafe}
+.progress-wrap{background:#e5e7eb;height:8px;position:sticky;top:0;z-index:20}
+.progress{height:100%;width:0;background:var(--gold);transition:.3s}
+nav{position:sticky;top:8px;z-index:10;background:#fff;border-bottom:1px solid #e5e7eb;padding:10px;overflow:auto}
+.nav-inner{max-width:1050px;margin:auto;display:flex;gap:8px}
+nav button{border:0;background:#eef2ff;color:#1e3a8a;padding:9px 13px;border-radius:20px;cursor:pointer;white-space:nowrap}
+nav button:hover{background:#dbeafe}
+main{padding:28px 16px 60px}
+.card{background:var(--white);border-radius:18px;padding:25px;margin:0 0 22px;box-shadow:0 8px 25px rgba(15,23,42,.07)}
+.card h2{color:var(--navy);margin-top:0;border-left:5px solid var(--gold);padding-left:12px}
+.card h3{color:#173d70}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}
+label{font-weight:650;display:block;margin-bottom:5px}
+input,textarea,select{width:100%;border:1px solid #cbd5e1;border-radius:10px;padding:11px 12px;font:inherit;background:#fff}
+textarea{min-height:95px;resize:vertical}
+input:focus,textarea:focus{outline:3px solid #dbeafe;border-color:var(--blue)}
+.skill-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
+.skill{display:flex;align-items:center;gap:8px;padding:10px;border:1px solid #e2e8f0;border-radius:10px;background:#fafafa}
+.skill input{width:auto}
+.skill.selected{border-color:var(--blue);background:#eff6ff}
+.counter{font-weight:700;margin:10px 0;color:var(--blue)}
+.warning{color:var(--red);font-weight:700;display:none}
+.example{background:#f8fafc;border-left:4px solid var(--blue);padding:15px;border-radius:8px}
+.script{background:#0f172a;color:#e2e8f0;border-radius:12px;padding:18px;white-space:pre-wrap;min-height:220px}
+.actions{display:flex;flex-wrap:wrap;gap:10px}
+button.action{border:0;border-radius:10px;padding:12px 18px;font-weight:700;cursor:pointer;background:var(--blue);color:#fff}
+button.secondary{background:#e2e8f0;color:#0f172a}
+button.gold{background:var(--gold);color:#111827}
+table{width:100%;border-collapse:collapse}
+th,td{padding:10px;border:1px solid #dbe2ea;text-align:center}
+th{background:#eef2ff}
+.score-input{max-width:100px;margin:auto}
+.total{font-size:24px;font-weight:800;color:var(--green);margin-top:15px}
+.toast{position:fixed;right:20px;bottom:20px;background:#0f172a;color:white;padding:12px 18px;border-radius:10px;display:none;z-index:50}
+@media(max-width:700px){
+ .grid,.skill-grid{grid-template-columns:1fr}
+ .card{padding:18px}
+ table{font-size:12px}
+ th,td{padding:7px}
+}
+@media print{
+ nav,.actions,.progress-wrap{display:none}
+ body{background:#fff}
+ .card{box-shadow:none;border:1px solid #ddd;break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <h1>Professional Self-Introduction</h1>
+    <p>Interactive LKPD — English Grade 11</p>
+  </div>
+</header>
+
+<div class="progress-wrap"><div class="progress" id="progress"></div></div>
+
+<nav>
+  <div class="nav-inner">
+    <button onclick="goTo('partA')">Part A</button>
+    <button onclick="goTo('partB')">Part B</button>
+    <button onclick="goTo('partC')">Part C</button>
+    <button onclick="goTo('partD')">Part D</button>
+    <button onclick="goTo('partE')">Part E</button>
+    <button onclick="goTo('rubric')">Assessment</button>
+  </div>
+</nav>
+
+<main class="container">
+<section class="card">
+  <h2>Learning Objective</h2>
+  <p>Students are able to introduce themselves professionally by describing their personal background, skills, achievements, experiences, and career goals in English.</p>
+  <h3>Task: “Introducing Myself Professionally”</h3>
+  <p>Imagine that you are applying for a scholarship, internship, university program, or your first job. Complete the worksheet and use it as a guide for your presentation.</p>
+</section>
+
+<section class="card" id="partA">
+  <h2>Part A — Personal Profile</h2>
+  <div class="grid">
+    <div><label>Full Name</label><input id="name" placeholder="e.g. Ahmad Rizky"></div>
+    <div><label>Age</label><input id="age" type="number" min="1" placeholder="17"></div>
+    <div><label>School</label><input id="school" placeholder="e.g. SMA 17 Agustus 1945 Surabaya"></div>
+    <div><label>Major / Class</label><input id="major" placeholder="e.g. Grade 11 Science"></div>
+  </div>
+  <h3>Short Professional Introduction</h3>
+  <label>1. Who are you?</label><textarea id="who" placeholder="Write 1–2 sentences about yourself."></textarea>
+  <label>2. What are you currently studying?</label><textarea id="study" placeholder="Describe your current study."></textarea>
+  <label>3. What are your interests?</label><textarea id="interest" placeholder="Mention your academic or personal interests."></textarea>
+  <label>4. What are your career goals?</label><textarea id="goalA" placeholder="Describe your future career goals."></textarea>
+</section>
+
+<section class="card" id="partB">
+  <h2>Part B — Skills Inventory</h2>
+  <p>Choose <strong>at least 5 skills</strong> that describe you.</p>
+  <h3>Hard Skills</h3>
+  <div class="skill-grid" id="hardSkills"></div>
+  <h3>Soft Skills</h3>
+  <div class="skill-grid" id="softSkills"></div>
+  <div class="counter">Selected skills: <span id="skillCount">0</span> / 5 minimum</div>
+  <div class="warning" id="skillWarning">Please select at least 5 skills.</div>
+  <h3>Write Examples</h3>
+  <div class="example">Example: “I have good communication skills because I often participate in class presentations.”</div>
+  <textarea id="skillExample1" placeholder="Example 1"></textarea>
+  <textarea id="skillExample2" placeholder="Example 2"></textarea>
+  <textarea id="skillExample3" placeholder="Example 3"></textarea>
+</section>
+
+<section class="card" id="partC">
+  <h2>Part C — Experiences and Achievements</h2>
+  <h3>Organizational Experience</h3>
+  <div class="grid">
+    <div><label>Organization</label><input id="organization"></div>
+    <div><label>Position</label><input id="position"></div>
+  </div>
+  <label>Responsibilities</label><textarea id="responsibilities"></textarea>
+  <h3>Academic or Non-Academic Achievement</h3>
+  <div class="grid">
+    <div><label>Achievement</label><input id="achievement"></div>
+    <div><label>Year</label><input id="year" type="number" min="1900" max="2100"></div>
+  </div>
+  <label>Description</label><textarea id="achievementDesc"></textarea>
+</section>
+
+<section class="card" id="partD">
+  <h2>Part D — Career Goals</h2>
+  <label>What career would you like to pursue?</label>
+  <textarea id="career"></textarea>
+  <label>Why are you interested in this career?</label>
+  <textarea id="whyCareer"></textarea>
+  <label>What steps are you taking to achieve this goal?</label>
+  <textarea id="steps"></textarea>
+</section>
+
+<section class="card" id="partE">
+  <h2>Part E — Professional Self-Introduction Script</h2>
+  <p>Use the information above to create a 1–2 minute professional introduction.</p>
+  <h3>Presentation Structure</h3>
+  <ol>
+    <li><strong>Greeting and Introduction</strong></li>
+    <li><strong>Educational Background</strong></li>
+    <li><strong>Skills</strong></li>
+    <li><strong>Experiences</strong></li>
+    <li><strong>Future Goals</strong></li>
+    <li><strong>Closing</strong></li>
+  </ol>
+  <button class="action gold" onclick="generateScript()">✨ Generate My Script</button>
+  <div class="script" id="scriptOutput">Your personalized professional self-introduction will appear here.</div>
+  <div class="actions" style="margin-top:12px">
+    <button class="action" onclick="copyScript()">Copy Script</button>
+    <button class="action secondary" onclick="speakScript()">🔊 Listen</button>
+  </div>
+  <h3>Example</h3>
+  <div class="example">
+    Good morning, everyone.<br><br>
+    My name is Ahmad Rizky, and I am a Grade 11 student at SMA 17 Agustus 1945 Surabaya. I am interested in technology and education.<br><br>
+    I consider myself a responsible, hardworking, and communicative person. One of my strengths is public speaking because I often participate in school presentations. I also have good teamwork skills from working on group projects.<br><br>
+    During my time at school, I joined the English Club, where I improved my communication and leadership abilities.<br><br>
+    In the future, I would like to become a software engineer. Therefore, I am currently learning programming and improving my English skills.<br><br>
+    Thank you for your attention.
+  </div>
+</section>
+
+<section class="card" id="rubric">
+  <h2>Assessment Rubric</h2>
+  <table>
+    <thead>
+      <tr><th>Criteria</th><th>Excellent<br>25</th><th>Good<br>20</th><th>Fair<br>15</th><th>Needs Improvement<br>10</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Content</td><td><input class="score-input" id="s1" type="number" min="0" max="25"></td><td colspan="3">Teacher score</td></tr>
+      <tr><td>Vocabulary</td><td><input class="score-input" id="s2" type="number" min="0" max="25"></td><td colspan="3">Teacher score</td></tr>
+      <tr><td>Grammar</td><td><input class="score-input" id="s3" type="number" min="0" max="25"></td><td colspan="3">Teacher score</td></tr>
+      <tr><td>Pronunciation &amp; Fluency</td><td><input class="score-input" id="s4" type="number" min="0" max="25"></td><td colspan="3">Teacher score</td></tr>
+    </tbody>
+  </table>
+  <div class="total">Total Score: <span id="totalScore">0</span> / 100</div>
+</section>
+
+<section class="card">
+  <h2>Save / Print Your Work</h2>
+  <div class="actions">
+    <button class="action" onclick="saveData()">💾 Save Progress</button>
+    <button class="action secondary" onclick="loadData()">↻ Load Progress</button>
+    <button class="action secondary" onclick="window.print()">🖨 Print / Save PDF</button>
+    <button class="action" onclick="clearData()">Clear Form</button>
+  </div>
+</section>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const hard = ["Microsoft Office","Graphic Design","Public Speaking","English Communication","Writing","Programming","Video Editing","Social Media Management","Data Analysis","Other"];
+const soft = ["Communication","Teamwork","Leadership","Problem Solving","Time Management","Adaptability","Creativity","Responsibility","Critical Thinking","Self-Confidence"];
+
+function renderSkills(list, target){
+  document.getElementById(target).innerHTML = list.map((s,i)=>`
+    <label class="skill">
+      <input type="checkbox" value="${s}" onchange="updateSkills(this)">
+      <span>${s}</span>
+    </label>`).join("");
+}
+renderSkills(hard,"hardSkills");
+renderSkills(soft,"softSkills");
+
+function updateSkills(el){
+  el.parentElement.classList.toggle("selected",el.checked);
+  const count=document.querySelectorAll('.skill input:checked').length;
+  document.getElementById("skillCount").textContent=count;
+  document.getElementById("skillWarning").style.display=count>=5?"none":"block";
+}
+
+function val(id){return document.getElementById(id).value.trim()}
+
+function generateScript(){
+  const name=val("name") || "________";
+  const school=val("school") || "________";
+  const major=val("major") || "Grade 11";
+  const study=val("study") || "my current subjects";
+  const interest=val("interest") || "________";
+  const career=val("career") || "________";
+  const steps=val("steps") || "continue developing my skills";
+  const org=val("organization");
+  const resp=val("responsibilities");
+  const selected=[...document.querySelectorAll('.skill input:checked')].map(x=>x.value);
+  const skills=selected.length ? selected.slice(0,5).join(", ") : "________";
+  const experience=org ? `${org}${resp ? ", where I was responsible for " + resp : ""}` : "school projects and extracurricular activities";
+  const script =
+`Good morning, everyone.
+
+My name is ${name}, and I am a ${major} student at ${school}. Today, I would like to introduce myself professionally.
+
+Currently, I am studying ${study}. I am particularly interested in ${interest}.
+
+Some of my strengths include ${skills}. These skills have helped me in both academic and extracurricular activities.
+
+I have participated in ${experience}. Through this experience, I learned valuable skills and became more confident.
+
+In the future, I hope to become a ${career}. To achieve this goal, I plan to ${steps}.
+
+Thank you for your attention.`;
+  document.getElementById("scriptOutput").textContent=script;
+  showToast("Script generated successfully!");
+}
+
+function copyScript(){
+  const text=document.getElementById("scriptOutput").textContent;
+  navigator.clipboard.writeText(text).then(()=>showToast("Script copied!"));
+}
+
+function speakScript(){
+  const text=document.getElementById("scriptOutput").textContent;
+  if(!text || text.includes("will appear here")) return showToast("Generate the script first.");
+  speechSynthesis.cancel();
+  const utter=new SpeechSynthesisUtterance(text);
+  utter.lang="en-US"; utter.rate=.88;
+  speechSynthesis.speak(utter);
+}
+
+function calculate(){
+  let total=0;
+  for(let i=1;i<=4;i++) total += Number(document.getElementById("s"+i).value)||0;
+  document.getElementById("totalScore").textContent=Math.min(total,100);
+}
+document.querySelectorAll(".score-input").forEach(x=>x.addEventListener("input",calculate));
+
+const ids=["name","age","school","major","who","study","interest","goalA","skillExample1","skillExample2","skillExample3","organization","position","responsibilities","achievement","year","achievementDesc","career","whyCareer","steps","s1","s2","s3","s4"];
+
+function saveData(){
+  const data={};
+  ids.forEach(id=>data[id]=document.getElementById(id).value);
+  data.skills=[...document.querySelectorAll('.skill input:checked')].map(x=>x.value);
+  localStorage.setItem("professionalSelfIntro",JSON.stringify(data));
+  showToast("Progress saved on this device.");
+}
+function loadData(){
+  const raw=localStorage.getItem("professionalSelfIntro");
+  if(!raw) return showToast("No saved progress found.");
+  const data=JSON.parse(raw);
+  ids.forEach(id=>{if(data[id]!==undefined) document.getElementById(id).value=data[id]});
+  document.querySelectorAll('.skill input').forEach(x=>{
+    x.checked=data.skills?.includes(x.value)||false;
+    x.parentElement.classList.toggle("selected",x.checked);
+  });
+  document.getElementById("skillCount").textContent=document.querySelectorAll('.skill input:checked').length;
+  calculate(); showToast("Progress loaded.");
+}
+function clearData(){
+  if(!confirm("Clear all answers?")) return;
+  document.querySelectorAll("input,textarea").forEach(x=>x.value="");
+  document.querySelectorAll('.skill input').forEach(x=>{x.checked=false;x.parentElement.classList.remove("selected")});
+  document.getElementById("skillCount").textContent="0";
+  document.getElementById("skillWarning").style.display="block";
+  document.getElementById("totalScore").textContent="0";
+  document.getElementById("scriptOutput").textContent="Your personalized professional self-introduction will appear here.";
+  localStorage.removeItem("professionalSelfIntro");
+}
+function goTo(id){document.getElementById(id).scrollIntoView({behavior:"smooth",block:"start"})}
+function showToast(msg){
+  const t=document.getElementById("toast"); t.textContent=msg;t.style.display="block";
+  setTimeout(()=>t.style.display="none",2200);
+}
+window.addEventListener("scroll",()=>{
+  const h=document.documentElement.scrollHeight-window.innerHeight;
+  document.getElementById("progress").style.width=(h>0?(scrollY/h)*100:0)+"%";
+});
+</script>
+</body>
+</html>
