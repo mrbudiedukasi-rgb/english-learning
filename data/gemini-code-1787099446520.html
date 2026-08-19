@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Present Tense - Interactive Exercise</title>
+    <style>
+        /* ==========================================================================
+           1. CSS VARIABLES & RESET
+           ========================================================================== */
+        :root {
+            --primary-navy: #1B2A4A;
+            --secondary-navy: #2C3E50;
+            --accent-gold: #D4AF37;
+            --accent-gold-hover: #B59223;
+            --bg-light: #F4F7F9;
+            --card-bg: #FFFFFF;
+            --text-main: #2D3748;
+            --text-muted: #718096;
+            --correct-green: #27AE60;
+            --incorrect-red: #E74C3C;
+            --border-color: #E2E8F0;
+            --radius-lg: 16px;
+            --radius-md: 8px;
+            --shadow-md: 0 10px 25px -5px rgba(27, 42, 74, 0.1), 0 8px 10px -6px rgba(27, 42, 74, 0.05);
+            --transition-smooth: all 0.3s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* ==========================================================================
+           2. HEADER & LAYOUT
+           ========================================================================== */
+        header {
+            background: linear-gradient(135deg, var(--primary-navy), var(--secondary-navy));
+            color: #FFFFFF;
+            padding: 2.5rem 1rem 2rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-bottom: 4px solid var(--accent-gold);
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            color: #FFFFFF;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            color: var(--accent-gold);
+            font-weight: 500;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: -1.5rem auto 3rem auto;
+            padding: 0 1rem;
+            width: 100%;
+            flex: 1;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .page-section {
+            display: none; /* Disembunyikan secara default untuk kontrol SPA */
+        }
+
+        .page-section.active {
+            display: block; /* Hanya tampilkan seksi yang aktif */
+        }
+
+        /* ==========================================================================
+           3. WELCOME & MATERIAL SUMMARY SECTION
+           ========================================================================== */
+        .welcome-title {
+            color: var(--primary-navy);
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .material-box {
+            background-color: #F8FAFC;
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .material-box h3 {
+            color: var(--secondary-navy);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .material-box ul {
+            padding-left: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .material-box li {
+            margin-bottom: 0.3rem;
+            font-size: 0.95rem;
+        }
+
+        .grammar-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0.75rem 0;
+            font-size: 0.9rem;
+        }
+
+        .grammar-table th, .grammar-table td {
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 0.75rem;
+            text-align: left;
+        }
+
+        .grammar-table th {
+            background-color: var(--primary-navy);
+            color: #FFFFFF;
+        }
+
+        /* ==========================================================================
+           4. PROGRESS BAR & METRICS
+           ========================================================================== */
+        .quiz-header {
+            margin-bottom: 2rem;
+        }
+
+        .quiz-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+            color: var(--primary-navy);
+        }
+
+        .progress-bar-bg {
+            background-color: var(--border-color);
+            height: 12px;
+            border-radius: 6px;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .progress-bar-fill {
+            background: linear-gradient(90deg, var(--primary-navy), var(--accent-gold));
+            height: 100%;
+            width: 5%;
+            transition: width 0.4s ease;
+            border-radius: 6px;
+        }
+
+        /* ==========================================================================
+           5. QUESTION & OPTIONS
+           ========================================================================== */
+        .question-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary-navy);
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .options-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+            margin-bottom: 2rem;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.25rem;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            background-color: #FFFFFF;
+            font-weight: 500;
+        }
+
+        .option-label:hover {
+            border-color: var(--accent-gold);
+            background-color: #FFFDF5;
+        }
+
+        .option-label input[type="radio"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--text-muted);
+            border-radius: 50%;
+            margin-right: 1rem;
+            outline: none;
+            display: grid;
+            place-content: center;
+            transition: var(--transition-smooth);
+            flex-shrink: 0;
+        }
+
+        .option-label input[type="radio"]::before {
+            content: "";
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            transform: scale(0);
+            transition: 0.2s transform ease-in-out;
+            background-color: var(--primary-navy);
+        }
+
+        .option-label input[type="radio"]:checked {
+            border-color: var(--primary-navy);
+        }
+
+        .option-label input[type="radio"]:checked::before {
+            transform: scale(1);
+        }
+
+        .option-label.selected {
+            border-color: var(--primary-navy);
+            background-color: #F0F4F8;
+        }
+
+        /* ==========================================================================
+           6. NAVIGATION BUTTONS
+           ========================================================================== */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.85rem 1.75rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: var(--radius-md);
+            border: none;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-navy);
+            color: #FFFFFF;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-navy);
+            transform: translateY(-2px);
+        }
+
+        .btn-accent {
+            background-color: var(--accent-gold);
+            color: var(--primary-navy);
+        }
+
+        .btn-accent:hover {
+            background-color: var(--accent-gold-hover);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: #E2E8F0;
+            color: var(--text-main);
+        }
+
+        .btn-secondary:hover {
+            background-color: #CBD5E0;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* ==========================================================================
+           7. RESULT & REVIEW SECTION
+           ========================================================================== */
+        .result-card {
+            text-align: center;
+        }
+
+        .result-header h2 {
+            color: var(--primary-navy);
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .score-circle {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #FFFFFF 60%, var(--bg-light) 100%);
+            border: 6px solid var(--accent-gold);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 1.5rem auto;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .score-number {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--primary-navy);
+            line-height: 1;
+        }
+
+        .score-label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-top: 0.25rem;
+        }
+
+        .feedback-box {
+            background-color: #F8FAFC;
+            border-left: 4px solid var(--accent-gold);
+            padding: 1.25rem;
+            margin: 1.5rem 0;
+            text-align: left;
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+            font-size: 1.05rem;
+            color: var(--secondary-navy);
+        }
+
+        .performance-summary {
+            background-color: #FFFFFF;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .performance-summary h3 {
+            color: var(--primary-navy);
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+
+        .summary-item {
+            font-size: 0.95rem;
+        }
+
+        .summary-item span {
+            font-weight: 700;
+        }
+
+        .review-section {
+            display: none;
+            margin-top: 2rem;
+            text-align: left;
+            border-top: 2px dashed var(--border-color);
+            padding-top: 2rem;
+        }
+
+        .review-item {
+            background-color: #FFFFFF;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .review-item.correct {
+            border-left: 5px solid var(--correct-green);
+        }
+
+        .review-item.incorrect {
+            border-left: 5px solid var(--incorrect-red);
+        }
+
+        .review-q-title {
+            font-weight: 600;
+            color: var(--primary-navy);
+            margin-bottom: 0.75rem;
+        }
+
+        .review-ans {
+            font-size: 0.95rem;
+            margin-bottom: 0.35rem;
+        }
+
+        .review-ans.user-ans {
+            color: var(--text-main);
+        }
+
+        .review-ans.correct-ans {
+            color: var(--correct-green);
+            font-weight: 600;
+        }
+
+        .review-status {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .status-correct {
+            background-color: #E8F8F0;
+            color: var(--correct-green);
+        }
+
+        .status-incorrect {
+            background-color: #FDE8E8;
+            color: var(--incorrect-red);
+        }
+
+        .review-explanation {
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            background-color: #F8FAFC;
+            padding: 0.75rem;
+            border-radius: 4px;
+        }
+
+        /* ==========================================================================
+           8. FOOTER
+           ========================================================================== */
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            background-color: #FFFFFF;
+            border-top: 1px solid var(--border-color);
+            margin-top: auto;
+        }
+
+        /* ==========================================================================
+           9. RESPONSIVE DESIGN
+           ========================================================================== */
+        @media (max-width: 600px) {
+            .card {
+                padding: 1.5rem;
+            }
+            header h1 {
+                font-size: 1.6rem;
+            }
+            header p {
+                font-size: 0.95rem;
+            }
+            .question-text {
+                font-size: 1.1rem;
+            }
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+            .nav-buttons {
+                flex-direction: column;
+            }
+            .btn {
+                width: 100%;
+            }
+            .grammar-table {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <h1>SIMPLE PRESENT TENSE</h1>
+        <p>English Practice for Grade 10 Students</p>
+    </header>
+
+    <!-- MAIN SINGLE PAGE CONTAINER -->
+    <div class="container">
+        
+        <!-- SECTION 1: WELCOME & GRAMMAR SUMMARY -->
+        <div class="card page-section active" id="welcome-section">
+            <h2 class="welcome-title">Welcome to Interactive English Practice</h2>
+            <p style="margin-bottom: 1.25rem;">Latihan ini dirancang untuk menguji pemahaman tata bahasa <strong>Simple Present Tense</strong> siswa Kelas 10 SMA. Sebelum memulai latihan 20 soal interaktif, silakan pelajari ringkasan materi di bawah ini.</p>
+
+            <div class="material-box">
+                <h3>📌 Ringkasan Materi Simple Present Tense</h3>
+                <p style="font-size: 0.95rem; margin-bottom: 0.5rem;">Digunakan untuk menyatakan kebiasaan (habitual actions), fakta umum (general truths), dan rutinitas harian.</p>
+                
+                <table class="grammar-table">
+                    <thead>
+                        <tr>
+                            <th>Bentuk Kalimat</th>
+                            <th>Subjek (I, You, We, They)</th>
+                            <th>Subjek (He, She, It)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Positif (+)</strong></td>
+                            <td>Subject + Verb 1</td>
+                            <td>Subject + Verb 1 (-s/-es)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Negatif (-)</strong></td>
+                            <td>Subject + <strong>don't</strong> + Verb 1</td>
+                            <td>Subject + <strong>doesn't</strong> + Verb 1</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tanya (?)</strong></td>
+                            <td><strong>Do</strong> + Subject + Verb 1?</td>
+                            <td><strong>Does</strong> + Subject + Verb 1?</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem;">
+                    * <strong>Adverbs of Frequency:</strong> <em>always, usually, often, sometimes, rarely, never</em> (diletakkan sebelum verb utama).
+                </p>
+            </div>
+
+            <div style="text-align: center; margin-top: 2rem;">
+                <button class="btn btn-accent" style="padding: 1rem 2.5rem; font-size: 1.1rem;" onclick="startQuiz()">Start Quiz Now 🚀</button>
+            </div>
+        </div>
+
+        <!-- SECTION 2: QUIZ CARD -->
+        <div class="card page-section" id="quiz-section">
+            <div class="quiz-header">
+                <div class="quiz-info">
+                    <span id="question-number">Question 1 of 20</span>
+                    <span id="progress-percent">5%</span>
+                </div>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" id="progress-fill"></div>
+                </div>
+            </div>
+
+            <!-- QUESTION AREA -->
+            <div id="question-container">
+                <div class="question-text" id="question-text">Loading question...</div>
+                <div class="options-group" id="options-container">
+                    <!-- Options injected via JavaScript -->
+                </div>
+            </div>
+
+            <!-- NAVIGATION BUTTONS -->
+            <div class="nav-buttons">
+                <button class="btn btn-secondary" id="btn-prev" onclick="navigateQuestion(-1)" disabled>← Previous</button>
+                <button class="btn btn-primary" id="btn-next" onclick="navigateQuestion(1)">Next →</button>
+                <button class="btn btn-accent" id="btn-submit" onclick="submitQuiz()" style="display: none;">Submit Quiz</button>
+            </div>
+        </div>
+
+        <!-- SECTION 3: RESULT CARD -->
+        <div class="card result-card page-section" id="result-section">
+            <div class="result-header">
+                <h2>QUIZ COMPLETED!</h2>
+                <p>Here is your performance summary</p>
+            </div>
+
+            <div class="score-circle">
+                <div class="score-number" id="score-text">0</div>
+                <div class="score-label">Final Score</div>
+            </div>
+
+            <div class="feedback-box" id="feedback-text">
+                Feedback text will appear here.
+            </div>
+
+            <div class="performance-summary">
+                <h3>Performance Summary</h3>
+                <div class="summary-grid">
+                    <div class="summary-item">Total Questions: <span>20</span></div>
+                    <div class="summary-item">Correct Answers: <span id="summary-correct" style="color: var(--correct-green);">0</span></div>
+                    <div class="summary-item">Incorrect Answers: <span id="summary-wrong" style="color: var(--incorrect-red);">0</span></div>
+                    <div class="summary-item">Percentage: <span id="summary-percentage">0%</span></div>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="toggleReview()">Review Answers</button>
+                <button class="btn btn-accent" onclick="restartQuiz()">Try Again ↺</button>
+            </div>
+
+            <!-- REVIEW SECTION -->
+            <div class="review-section" id="review-section">
+                <h3 style="color: var(--primary-navy); margin-bottom: 1.5rem;">Answer Review</h3>
+                <div id="review-container">
+                    <!-- Review items injected via JavaScript -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        &copy; 2026 Senior High School English Learning Platform | Instructional Design for Grade 10
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        /* ==========================================================================
+           MASTER QUESTION BANK (20 Questions - Grade 10 Standard)
+           ========================================================================== */
+        const rawQuestions = [
+            // 7 Easy Questions
+            {
+                question: "Siti is a diligent student. She ___ to school at 06:30 a.m. every day.",
+                options: ["go", "goes", "going", "gone"],
+                answer: "goes",
+                explanation: "We use 'goes' because the subject 'She' is third-person singular and requires the verb+es suffix in Simple Present Tense."
+            },
+            {
+                question: "My father and I ___ football in the backyard every Sunday morning.",
+                options: ["plays", "playing", "play", "played"],
+                answer: "play",
+                explanation: "The subject 'My father and I' is plural (We), so we use the base form of the verb (Verb 1) 'play'."
+            },
+            {
+                question: "The Earth ___ around the Sun.",
+                options: ["revolve", "revolves", "revolving", "is revolve"],
+                answer: "revolves",
+                explanation: "This is a general truth/scientific fact with a singular subject 'The Earth', requiring Verb 1 + -s ('revolves')."
+            },
+            {
+                question: "Rian and Doni are classmates. They ___ usually late for the English lesson.",
+                options: ["is", "am", "are", "be"],
+                answer: "are",
+                explanation: "The plural subject 'They' (Rian and Doni) takes the nominal auxiliary 'are'."
+            },
+            {
+                question: "I ___ always drink milk before going to bed.",
+                options: ["do", "does", "am", "is"],
+                answer: "do",
+                explanation: "With the subject 'I', the auxiliary used for general present tense structure is 'do'."
+            },
+            {
+                question: "My sister ___ not like spicy food because it hurts her stomach.",
+                options: ["do", "does", "is", "are"],
+                answer: "does",
+                explanation: "The negative sentence with singular subject 'My sister' requires 'does not' (doesn't)."
+            },
+            {
+                question: "___ you live near the state senior high school?",
+                options: ["Do", "Does", "Is", "Are"],
+                answer: "Do",
+                explanation: "Interrogative sentence with subject 'you' requires the auxiliary verb 'Do'."
+            },
+
+            // 8 Medium Questions
+            {
+                question: "Which of the following sentences is grammatically correct?",
+                options: [
+                    "He don't likes coffee in the morning.",
+                    "He doesn't likes coffee in the morning.",
+                    "He doesn't like coffee in the morning.",
+                    "He not like coffee in the morning."
+                ],
+                answer: "He doesn't like coffee in the morning.",
+                explanation: "After the auxiliary 'doesn't', the main verb returns to its base form ('like', without -s)."
+            },
+            {
+                question: "A secretary ___ emails, answers phone calls, and arranges meetings every day.",
+                options: ["write", "writes", "writing", "is write"],
+                answer: "writes",
+                explanation: "Parallel daily activities for a singular subject ('A secretary') require Verb 1 + -s ('writes')."
+            },
+            {
+                question: "Dina: How often do you practice playing the guitar?\nLeo: I ___ practice it. Only once or twice a month when I have free time.",
+                options: ["always", "usually", "rarely", "often"],
+                answer: "rarely",
+                explanation: "'Rarely' means almost never, matching the context of 'once or twice a month'."
+            },
+            {
+                question: "Cats ___ night vision, so they can see well in the dark.",
+                options: ["has", "have", "having", "are have"],
+                answer: "have",
+                explanation: "'Cats' is a plural noun, so it takes 'have' to state a general fact."
+            },
+            {
+                question: "___ Mr. Hendra teach Mathematics to Tenth-Grade students every Tuesday?",
+                options: ["Do", "Does", "Is", "Are"],
+                answer: "Does",
+                explanation: "Singular third-person subject 'Mr. Hendra' takes 'Does' in a question sentence."
+            },
+            {
+                question: "My parents ___ at home on weekends; they prefer spending time in the garden.",
+                options: ["don't stay", "doesn't stay", "aren't stay", "isn't stay"],
+                answer: "don't stay",
+                explanation: "Plural subject 'My parents' takes 'don't' + base verb ('stay') for negative statements."
+            },
+            {
+                question: "Why ___ your brothers always leave their shoes in front of the door?",
+                options: ["do", "does", "are", "is"],
+                answer: "do",
+                explanation: "The subject 'your brothers' is plural (they), so the interrogative form uses 'do'."
+            },
+            {
+                question: "Water ___ at 100 degrees Celsius under standard atmospheric pressure.",
+                options: ["boil", "boils", "boiling", "is boil"],
+                answer: "boils",
+                explanation: "Uncountable noun/singular concept 'Water' describing a general scientific fact takes Verb 1 + -s ('boils')."
+            },
+
+            // 5 Challenging Questions
+            {
+                question: "Select the correct sentence structure for a daily routine.",
+                options: [
+                    "She usually finishes her homework before dinner.",
+                    "She finishes usually her homework before dinner.",
+                    "Usually she finish her homework before dinner.",
+                    "She finishes her homework usually before dinner."
+                ],
+                answer: "She usually finishes her homework before dinner.",
+                explanation: "Adverbs of frequency (usually) are placed before the main verb ('finishes') and after the subject."
+            },
+            {
+                question: "Neither of my brothers ___ how to fix a motorcycle engine.",
+                options: ["know", "knows", "knowing", "are know"],
+                answer: "knows",
+                explanation: "'Neither of...' takes a singular verb agreement in formal English grammar, so we use 'knows'."
+            },
+            {
+                question: "The students, along with their English teacher, ___ the library every Friday afternoon.",
+                options: ["visit", "visits", "visiting", "are visit"],
+                answer: "visit",
+                explanation: "In 'The students, along with their teacher...', the primary subject 'The students' is plural, so it takes the plural verb 'visit'."
+            },
+            {
+                question: "___ your uncle work in a bank, or ___ he manage his own restaurant?",
+                options: ["Do / do", "Does / do", "Does / does", "Do / does"],
+                answer: "Does / does",
+                explanation: "Both clauses refer to the singular subject 'your uncle' / 'he', requiring 'Does' for both questions."
+            },
+            {
+                question: "Which negative sentence correctly expresses a habitual action?",
+                options: [
+                    "Annis doesn't often goes to the cinema on weekdays.",
+                    "Annis doesn't often go to the cinema on weekdays.",
+                    "Annis don't often go to the cinema on weekdays.",
+                    "Annis isn't often go to the cinema on weekdays."
+                ],
+                answer: "Annis doesn't often go to the cinema on weekdays.",
+                explanation: "The structure 'doesn't + adverb of frequency + base verb (go)' is grammatically correct for third-person singular."
+            }
+        ];
+
+        /* ==========================================================================
+           STATE MANAGEMENT & SPA NAVIGATION
+           ========================================================================== */
+        let activeQuestions = [];
+        let currentIndex = 0;
+        let userAnswers = {};
+
+        // Utility: Fisher-Yates Shuffle
+        function shuffleArray(array) {
+            let shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        // Single Page Section Switching
+        function showSection(sectionId) {
+            document.querySelectorAll('.page-section').forEach(sec => {
+                sec.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Start Quiz from Welcome Screen
+        function startQuiz() {
+            // Shuffle questions and options dynamically
+            activeQuestions = rawQuestions.map(q => ({
+                ...q,
+                options: shuffleArray(q.options)
+            }));
+            activeQuestions = shuffleArray(activeQuestions);
+
+            currentIndex = 0;
+            userAnswers = {};
+
+            showSection('quiz-section');
+            renderQuestion();
+        }
+
+        // Render Question Card
+        function renderQuestion() {
+            const q = activeQuestions[currentIndex];
+            
+            // Progress Update
+            document.getElementById('question-number').innerText = `Question ${currentIndex + 1} of ${activeQuestions.length}`;
+            const percent = Math.round(((currentIndex + 1) / activeQuestions.length) * 100);
+            document.getElementById('progress-percent').innerText = `${percent}%`;
+            document.getElementById('progress-fill').style.width = `${percent}%`;
+
+            // Question Text
+            document.getElementById('question-text').innerText = `${currentIndex + 1}. ${q.question}`;
+
+            // Options
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach((opt) => {
+                const isSelected = userAnswers[currentIndex] === opt;
+                
+                const label = document.createElement('label');
+                label.className = `option-label ${isSelected ? 'selected' : ''}`;
+                
+                const radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.name = 'quiz-option';
+                radio.value = opt;
+                radio.checked = isSelected;
+                
+                radio.addEventListener('change', () => {
+                    userAnswers[currentIndex] = opt;
+                    document.querySelectorAll('.option-label').forEach(l => l.classList.remove('selected'));
+                    label.classList.add('selected');
+                });
+
+                label.appendChild(radio);
+                label.appendChild(document.createTextNode(opt));
+                optionsContainer.appendChild(label);
+            });
+
+            // Navigation Controls
+            document.getElementById('btn-prev').disabled = currentIndex === 0;
+
+            if (currentIndex === activeQuestions.length - 1) {
+                document.getElementById('btn-next').style.display = 'none';
+                document.getElementById('btn-submit').style.display = 'inline-flex';
+            } else {
+                document.getElementById('btn-next').style.display = 'inline-flex';
+                document.getElementById('btn-submit').style.display = 'none';
+            }
+        }
+
+        // Navigate Questions
+        function navigateQuestion(direction) {
+            const newIndex = currentIndex + direction;
+            if (newIndex >= 0 && newIndex < activeQuestions.length) {
+                currentIndex = newIndex;
+                renderQuestion();
+            }
+        }
+
+        // Submit & Score
+        function submitQuiz() {
+            const answeredCount = Object.keys(userAnswers).length;
+            if (answeredCount < activeQuestions.length) {
+                const confirmSubmit = confirm(`You have answered ${answeredCount} of ${activeQuestions.length} questions. Submit anyway?`);
+                if (!confirmSubmit) return;
+            }
+
+            let correctCount = 0;
+            activeQuestions.forEach((q, idx) => {
+                if (userAnswers[idx] === q.answer) {
+                    correctCount++;
+                }
+            });
+
+            const total = activeQuestions.length;
+            const wrongCount = total - correctCount;
+            const score = Math.round((correctCount / total) * 100);
+
+            // Populate Results Page
+            document.getElementById('score-text').innerText = score;
+            document.getElementById('summary-correct').innerText = correctCount;
+            document.getElementById('summary-wrong').innerText = wrongCount;
+            document.getElementById('summary-percentage').innerText = `${score}%`;
+
+            let feedback = "";
+            if (score >= 90) {
+                feedback = "<strong>Excellent!</strong> You have a very good understanding of Simple Present Tense.";
+            } else if (score >= 80) {
+                feedback = "<strong>Great job!</strong> Your understanding is good, but keep practicing.";
+            } else if (score >= 70) {
+                feedback = "<strong>Good effort!</strong> Review the grammar rules and practice more.";
+            } else if (score >= 60) {
+                feedback = "<strong>Keep practicing!</strong> Pay more attention to subject-verb agreement.";
+            } else {
+                feedback = "<strong>Don't give up!</strong> Review the Simple Present Tense material and try again.";
+            }
+            document.getElementById('feedback-text').innerHTML = feedback;
+
+            buildReviewSection();
+            showSection('result-section');
+        }
+
+        // Build Answer Review HTML
+        function buildReviewSection() {
+            const container = document.getElementById('review-container');
+            container.innerHTML = '';
+
+            activeQuestions.forEach((q, idx) => {
+                const userAns = userAnswers[idx] || "<em>No answer selected</em>";
+                const isCorrect = userAnswers[idx] === q.answer;
+
+                const item = document.createElement('div');
+                item.className = `review-item ${isCorrect ? 'correct' : 'incorrect'}`;
+
+                item.innerHTML = `
+                    <div class="review-status ${isCorrect ? 'status-correct' : 'status-incorrect'}">
+                        ${isCorrect ? '✓ Correct' : '✗ Incorrect'}
+                    </div>
+                    <div class="review-q-title">Question ${idx + 1}: ${q.question}</div>
+                    <div class="review-ans user-ans"><strong>Your Answer:</strong> ${userAns}</div>
+                    <div class="review-ans correct-ans"><strong>Correct Answer:</strong> ${q.answer}</div>
+                    <div class="review-explanation"><strong>Explanation:</strong> ${q.explanation}</div>
+                `;
+
+                container.appendChild(item);
+            });
+        }
+
+        // Toggle Review Visibility
+        function toggleReview() {
+            const reviewSec = document.getElementById('review-section');
+            if (reviewSec.style.display === 'none' || reviewSec.style.display === '') {
+                reviewSec.style.display = 'block';
+                reviewSec.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                reviewSec.style.display = 'none';
+            }
+        }
+
+        // Restart Quiz
+        function restartQuiz() {
+            showSection('welcome-section');
+        }
+    </script>
+</body>
+</html>
