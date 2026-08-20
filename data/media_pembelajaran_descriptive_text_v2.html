@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Pembelajaran Interaktif: Descriptive Text Kelas 10</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0d9488;
+            --primary-dark: #0f766e;
+            --primary-light: #ccfbf1;
+            --secondary: #0284c7;
+            --bg-light: #f8fafc;
+            --card-bg: #ffffff;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --success: #16a34a;
+            --success-light: #dcfce7;
+            --danger: #dc2626;
+            --danger-light: #fee2e2;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --radius: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding-bottom: 40px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-dark), var(--secondary));
+            color: white;
+            padding: 2.5rem 1rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: 1rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0 1.5rem 0;
+        }
+
+        .tab-btn {
+            background-color: var(--card-bg);
+            color: var(--text-muted);
+            border: 2px solid var(--border);
+            padding: 0.75rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .tab-btn:hover {
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .tab-btn.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
+        }
+
+        /* Content Sections */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Material Content Cards */
+        .card {
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .card h2 {
+            color: var(--primary-dark);
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 0.5rem;
+        }
+
+        .card p, .card ul {
+            margin-bottom: 1rem;
+            color: #334155;
+        }
+
+        .card ul {
+            padding-left: 1.2rem;
+        }
+
+        .card li {
+            margin-bottom: 0.5rem;
+        }
+
+        .badge {
+            background-color: var(--primary-light);
+            color: var(--primary-dark);
+            padding: 0.2rem 0.6rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .example-box {
+            background-color: #f1f5f9;
+            border-left: 4px solid var(--secondary);
+            padding: 1.2rem;
+            border-radius: 0 var(--radius) var(--radius) 0;
+            margin-top: 1rem;
+        }
+
+        .example-box h3 {
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .structure-tag {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-right: 6px;
+        }
+
+        .tag-identification {
+            background-color: #e0f2fe;
+            color: #0369a1;
+        }
+
+        .tag-description {
+            background-color: #fef3c7;
+            color: #b45309;
+        }
+
+        /* Quiz Styles */
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            background-color: var(--primary-light);
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius);
+        }
+
+        .quiz-progress {
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+            color: var(--text-dark);
+        }
+
+        .reading-text-box {
+            background-color: #f8fafc;
+            border: 1px solid var(--border);
+            padding: 1.2rem;
+            border-radius: var(--radius);
+            margin-bottom: 1.2rem;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .reading-text-box h4 {
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .option-btn {
+            background-color: var(--card-bg);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            padding: 0.8rem 1.2rem;
+            text-align: left;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .option-btn:hover {
+            border-color: var(--primary);
+            background-color: #f0fdf4;
+        }
+
+        .option-btn.selected {
+            border-color: var(--primary);
+            background-color: var(--primary-light);
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+
+        .option-prefix {
+            font-weight: 700;
+            margin-right: 0.8rem;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+        }
+
+        .option-btn.selected .option-prefix {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        /* Quiz Controls */
+        .quiz-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary {
+            background-color: #e2e8f0;
+            color: var(--text-dark);
+        }
+
+        .btn-secondary:hover {
+            background-color: #cbd5e1;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-submit {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .btn-submit:hover {
+            background-color: #15803d;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Results & Access Code Styles */
+        .score-card {
+            text-align: center;
+            padding: 2.5rem;
+            background: linear-gradient(135deg, #f0fdf4, #e0f2fe);
+            border-radius: var(--radius);
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .score-card h2 {
+            font-size: 1.8rem;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .score-number {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            margin: 1rem 0;
+        }
+
+        .access-code-box {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border: 2px dashed var(--primary);
+            border-radius: var(--radius);
+            display: inline-block;
+            max-width: 450px;
+            width: 100%;
+        }
+
+        .access-code-box p {
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .code-input-group {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+
+        .code-input {
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            outline: none;
+            width: 60%;
+            text-align: center;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .code-input:focus {
+            border-color: var(--primary);
+        }
+
+        .error-msg {
+            color: var(--danger);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: none;
+            font-weight: 500;
+        }
+
+        .review-item {
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 1.2rem;
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .review-item.correct {
+            border-left: 6px solid var(--success);
+        }
+
+        .review-item.incorrect {
+            border-left: 6px solid var(--danger);
+        }
+
+        .review-q-title {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .review-ans-box {
+            font-size: 0.9rem;
+            padding: 0.6rem 1rem;
+            border-radius: 6px;
+            margin-bottom: 0.4rem;
+        }
+
+        .ans-user-correct {
+            background-color: var(--success-light);
+            color: #14532d;
+        }
+
+        .ans-user-incorrect {
+            background-color: var(--danger-light);
+            color: #7f1d1d;
+        }
+
+        .ans-key {
+            background-color: #f1f5f9;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .explanation {
+            margin-top: 0.8rem;
+            padding: 0.8rem;
+            background-color: #f8fafc;
+            border-radius: 6px;
+            font-size: 0.88rem;
+            color: #475569;
+            border-left: 3px solid var(--secondary);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 600px) {
+            header h1 { font-size: 1.5rem; }
+            .nav-tabs { flex-direction: column; }
+            .tab-btn { width: 100%; text-align: center; }
+            .card { padding: 1.2rem; }
+            .score-number { font-size: 2.5rem; }
+            .code-input-group { flex-direction: column; }
+            .code-input { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <h1>Media Pembelajaran Interaktif</h1>
+            <p>Bahasa Inggris Kelas 10 - Descriptive Text</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Tab Buttons -->
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="switchTab('materi')">📚 Tab Materi</button>
+            <button class="tab-btn" onclick="switchTab('kuis')">✏️ Tab Kuis (30 Soal)</button>
+        </div>
+
+        <!-- ================= TAB MATERI ================= -->
+        <div id="materi-tab" class="tab-content active">
+            
+            <!-- Pengertian -->
+            <div class="card">
+                <h2>📌 1. Pengertian (Definition)</h2>
+                <p><strong>Descriptive Text</strong> adalah jenis teks dalam bahasa Inggris yang bertujuan untuk menggambarkan atau mendeskripsikan suatu objek secara spesifik, baik itu orang (person), tempat (place), hewan (animal), maupun benda (thing).</p>
+                <p>Teks ini memberikan gambaran detail sehingga pembaca seolah-olah dapat melihat, mendengar, atau merasakan langsung apa yang dideskripsikan oleh penulis.</p>
+            </div>
+
+            <!-- Tujuan Sosial -->
+            <div class="card">
+                <h2>🎯 2. Tujuan Sosial (Social Function / Purpose)</h2>
+                <p>Tujuan utama dari Descriptive Text adalah:</p>
+                <ul>
+                    <li><strong>To describe</strong> a particular person, place, or thing. (Untuk mendeskripsikan orang, tempat, atau benda tertentu secara spesifik).</li>
+                    <li><strong>To give information</strong> about the specific characteristics of an object. (Untuk memberikan informasi detail mengenai ciri-ciri khusus suatu objek).</li>
+                </ul>
+            </div>
+
+            <!-- Struktur Teks -->
+            <div class="card">
+                <h2>🏗️ 3. Struktur Teks (Generic Structure)</h2>
+                <p>Descriptive Text terdiri dari 2 bagian utama:</p>
+                <ul>
+                    <li>
+                        <span class="badge">1. Identification</span>
+                        <p style="margin-top: 5px;">Berada di paragraf pertama. Berfungsi untuk mengenalkan/mengidentifikasi subjek atau objek yang akan dideskripsikan secara umum (siapa atau apa yang dibahas).</p>
+                    </li>
+                    <li>
+                        <span class="badge">2. Description</span>
+                        <p style="margin-top: 5px;">Berada di paragraf kedua dan seterusnya. Berisi penjelasan detail mengenai sifat, ciri-ciri fisik, tampilan, kualitas, atau karakteristik khusus dari objek yang dideskripsikan.</p>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Unsur Kebahasaan -->
+            <div class="card">
+                <h2>🔤 4. Unsur Kebahasaan (Language Features)</h2>
+                <ul>
+                    <li><strong>Specific Participant:</strong> Memiliki objek yang spesifik/khusus, tidak bersifat umum. (Contoh: <em>Borobudur Temple</em>, <em>My Dog Spot</em>, <em>Bambang Pamungkas</em> — bukan 'temple' atau 'dog' secara umum).</li>
+                    <li><strong>Adjectives (Kata Sifat):</strong> Digunakan untuk menjelaskan sifat objek. (Contoh: <em>beautiful, tall, famous, ancient, friendly, blue</em>).</li>
+                    <li><strong>Simple Present Tense:</strong> Menggunakan tata bahasa Simple Present Tense (Verb 1 / is, am, are) karena fakta atau kebenaran umum dari objek tersebut. (Contoh: <em>Borobudur is located in Magelang</em>, <em>He plays football very well</em>).</li>
+                    <li><strong>Action Verbs (Kata Kerja Aksi):</strong> Kata kerja yang menunjukkan tindakan atau aktivitas yang dapat dilihat. (Contoh: <em>run, walk, build, visit, bring</em>).</li>
+                </ul>
+            </div>
+
+            <!-- Contoh Teks Deskriptif -->
+            <div class="card">
+                <h2>📄 5. Contoh Teks Deskriptif</h2>
+
+                <!-- Contoh 1: Tempat Wisata -->
+                <div class="example-box">
+                    <h3>Example 1: Descriptive Text about a Place</h3>
+                    <h4 style="text-align: center; margin-bottom: 8px;">Borobudur Temple</h4>
+                    <p><span class="structure-tag tag-identification">Identification</span> Borobudur Temple is one of the most famous tourist destinations in Indonesia. It is located in Magelang, Central Java. This majestic temple is recognized worldwide as the largest Buddhist temple in the world.</p>
+                    <p style="margin-top: 8px;"><span class="structure-tag tag-description">Description</span> Borobudur consists of nine stacked platforms, six square and three circular, topped by a central dome. It is decorated with 2,672 relief panels and 504 Buddha statues. The temple was built in the 9th century during the reign of the Sailendra Dynasty. Visitors from all around the world come to admire its magnificent architecture and enjoy the breathtaking sunrise view from the top.</p>
+                </div>
+
+                <!-- Contoh 2: Tokoh/Orang -->
+                <div class="example-box" style="margin-top: 1.5rem;">
+                    <h3>Example 2: Descriptive Text about a Person</h3>
+                    <h4 style="text-align: center; margin-bottom: 8px;">Cristiano Ronaldo</h4>
+                    <p><span class="structure-tag tag-identification">Identification</span> Cristiano Ronaldo is a famous world-class professional football player from Portugal. He is widely considered one of the greatest football players of all time.</p>
+                    <p style="margin-top: 8px;"><span class="structure-tag tag-description">Description</span> Ronaldo has an athletic body with a height of 187 centimeters. He has short dark hair, brown eyes, and a very handsome smile. He is very disciplined, hard-working, and fast on the pitch. Ronaldo is famous for his incredible jumping ability, powerful shots, and exceptional goal-scoring skills. Off the field, he is known as a generous person who often donates money to charity.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ================= TAB KUIS ================= -->
+        <div id="kuis-tab" class="tab-content">
+            <div id="quiz-container" class="card">
+                <div class="quiz-header">
+                    <span class="quiz-progress" id="quiz-progress">Soal 1 dari 30</span>
+                    <span class="badge" id="quiz-timer">Kuis Interaktif</span>
+                </div>
+
+                <div id="reading-text-wrapper" class="reading-text-box" style="display: none;">
+                    <!-- Reading passage injected via JS -->
+                </div>
+
+                <div class="question-text" id="question-text">
+                    <!-- Question text injected via JS -->
+                </div>
+
+                <div class="options-container" id="options-container">
+                    <!-- Options injected via JS -->
+                </div>
+
+                <div class="quiz-controls">
+                    <button class="btn btn-secondary" id="btn-prev" onclick="navigateQuiz(-1)">← Sebelumnya</button>
+                    <button class="btn btn-primary" id="btn-next" onclick="navigateQuiz(1)">Selanjutnya →</button>
+                    <button class="btn btn-submit" id="btn-submit" onclick="submitQuiz()" style="display: none;">Selesai & Kirim Jawaban</button>
+                </div>
+            </div>
+
+            <!-- Result Section (Initially Hidden) -->
+            <div id="result-container" style="display: none;">
+                <div class="score-card">
+                    <h2>Hasil Kuis Anda</h2>
+                    <p>Terima kasih telah menyelesaikan kuis Descriptive Text!</p>
+                    <div class="score-number" id="final-score">0 / 30</div>
+                    <p id="score-message">Pesan feedback akan muncul di sini.</p>
+
+                    <!-- Akses Kode Pembahasan -->
+                    <div class="access-code-box" id="access-code-box">
+                        <p>🔒 Masukkan kode akses dari guru untuk membuka pembahasan & evaluasi jawaban:</p>
+                        <div class="code-input-group">
+                            <input type="password" id="teacher-code" class="code-input" placeholder="Masukkan Kode">
+                            <button class="btn btn-primary" onclick="unlockReview()">Buka Pembahasan</button>
+                        </div>
+                        <div id="code-error" class="error-msg">⚠️ Kode akses salah! Silakan minta kode kepada guru di depan.</div>
+                    </div>
+
+                    <button class="btn btn-secondary" onclick="restartQuiz()" style="margin-top: 1.5rem;">🔄 Ulangi Kuis</button>
+                </div>
+
+                <!-- Pembahasan Section (Locked by default) -->
+                <div class="card" id="review-card" style="display: none;">
+                    <h2>📋 Pembahasan & Evaluasi Jawaban</h2>
+                    <div id="review-list">
+                        <!-- Review items generated via JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data 30 Soal Kuis Descriptive Text
+        const quizData = [
+            // Text 1: Questions 1 - 6
+            {
+                textTitle: "Text 1 (For Questions 1 - 6)",
+                textContent: "Monas, or the National Monument, is a 132-meter tower in the center of Merdeka Square, Central Java, Jakarta. It symbolizes the struggle for Indonesia's independence. Construction began in 1961 under President Sukarno and was opened to the public in 1975. The monument is topped by a flame covered with gold foil. Visitors can take a lift to the observation platform at the top to enjoy a panoramic view of the city.",
+                question: "1. What is the main topic of the text above?",
+                options: ["A. Merdeka Square in Jakarta", "B. President Sukarno's history", "C. The National Monument (Monas)", "D. The gold foil on top of Monas"],
+                answer: 2, // C
+                explanation: "Teks mendeskripsikan Monas (National Monument) secara keseluruhan, mulai dari lokasi, sejarah singkat, hingga bagian-bagiannya."
+            },
+            {
+                textTitle: "Text 1 (For Questions 1 - 6)",
+                textContent: "Monas, or the National Monument, is a 132-meter tower in the center of Merdeka Square, Central Java, Jakarta. It symbolizes the struggle for Indonesia's independence. Construction began in 1961 under President Sukarno and was opened to the public in 1975. The monument is topped by a flame covered with gold foil. Visitors can take a lift to the observation platform at the top to enjoy a panoramic view of the city.",
+                question: "2. What is the height of Monas?",
+                options: ["A. 132 meters", "B. 1961 meters", "C. 1975 meters", "D. 504 meters"],
+                answer: 0, // A
+                explanation: "Berdasarkan kalimat pertama pada teks: '...is a 132-meter tower...'."
+            },
+            {
+                textTitle: "Text 1 (For Questions 1 - 6)",
+                textContent: "Monas, or the National Monument, is a 132-meter tower in the center of Merdeka Square, Central Java, Jakarta. It symbolizes the struggle for Indonesia's independence. Construction began in 1961 under President Sukarno and was opened to the public in 1975. The monument is topped by a flame covered with gold foil. Visitors can take a lift to the observation platform at the top to enjoy a panoramic view of the city.",
+                question: "3. What is placed on top of the monument?",
+                options: ["A. A Buddha statue", "B. A flame covered with gold foil", "C. An observation platform", "D. A picture of President Sukarno"],
+                answer: 1, // B
+                explanation: "Teks menyebutkan: 'The monument is topped by a flame covered with gold foil.'"
+            },
+            {
+                textTitle: "Text 1 (For Questions 1 - 6)",
+                textContent: "Monas, or the National Monument, is a 132-meter tower in the center of Merdeka Square, Central Java, Jakarta. It symbolizes the struggle for Indonesia's independence. Construction began in 1961 under President Sukarno and was opened to the public in 1975. The monument is topped by a flame covered with gold foil. Visitors can take a lift to the observation platform at the top to enjoy a panoramic view of the city.",
+                question: "4. In which paragraph do we find the 'Identification' of the text?",
+                options: ["A. In the first sentence", "B. In the last sentence", "C. In the whole text", "D. In paragraph 2"],
+                answer: 0, // A
+                explanation: "Identification berada pada bagian awal/kalimat pertama yang mengenalkan Monas sebagai objek yang dibahas."
+            },
+            {
+                textTitle: "Text 1 (For Questions 1 - 6)",
+                textContent: "Monas, or the National Monument, is a 132-meter tower in the center of Merdeka Square, Central Java, Jakarta. It symbolizes the struggle for Indonesia's independence. Construction began in 1961 under President Sukarno and was opened to the public in 1975. The monument is topped by a flame covered with gold foil. Visitors can take a lift to the observation platform at the top to enjoy a panoramic view of the city.",
+                question: "5. The word 'panoramic' in the text is closest in meaning to...",
+                options: ["A. Narrow", "B. Wide and complete", "C. Small and dark", "D. Crowded"],
+                answer: 1, // B
+                explanation: "'Panoramic view' berarti pemandangan yang luas dan menyeluruh dari segala arah."
+            },
+            {
+                textTitle: "Text 1 (For Questions 1 - 6)",
+                textContent: "Monas, or the National Monument, is a 132-meter tower in the center of Merdeka Square, Central Java, Jakarta. It symbolizes the struggle for Indonesia's independence. Construction began in 1961 under President Sukarno and was opened to the public in 1975. The monument is topped by a flame covered with gold foil. Visitors can take a lift to the observation platform at the top to enjoy a panoramic view of the city.",
+                question: "6. 'It symbolizes the struggle...' What does the word 'It' refer to?",
+                options: ["A. Merdeka Square", "B. President Sukarno", "C. Monas", "D. Gold foil"],
+                answer: 2, // C
+                explanation: "Kata 'It' merujuk pada objek utama yang sedang dibahas yaitu Monas (National Monument)."
+            },
+
+            // Text 2: Questions 7 - 12
+            {
+                textTitle: "Text 2 (For Questions 7 - 12)",
+                textContent: "My cat, Whiskers, is a small domestic cat. He has soft orange and white fur with bright green eyes. Whiskers is very energetic and playful. Every morning, he wakes me up by meowing gently. He loves playing with a small red ball in the living room. Whiskers eats fish and drinks fresh milk every afternoon.",
+                question: "7. What type of text is the passage above?",
+                options: ["A. Narrative Text", "B. Descriptive Text", "C. Recount Text", "D. Procedure Text"],
+                answer: 1, // B
+                explanation: "Teks di atas mendeskripsikan secara khusus tentang kucing peliharaan bernama Whiskers, sehingga merupakan Descriptive Text."
+            },
+            {
+                textTitle: "Text 2 (For Questions 7 - 12)",
+                textContent: "My cat, Whiskers, is a small domestic cat. He has soft orange and white fur with bright green eyes. Whiskers is very energetic and playful. Every morning, he wakes me up by meowing gently. He loves playing with a small red ball in the living room. Whiskers eats fish and drinks fresh milk every afternoon.",
+                question: "8. What color is Whiskers' fur?",
+                options: ["A. Black and white", "B. Orange and white", "C. Grey and brown", "D. Pure white"],
+                answer: 1, // B
+                explanation: "Teks menyatakan: 'He has soft orange and white fur...'"
+            },
+            {
+                textTitle: "Text 2 (For Questions 7 - 12)",
+                textContent: "My cat, Whiskers, is a small domestic cat. He has soft orange and white fur with bright green eyes. Whiskers is very energetic and playful. Every morning, he wakes me up by meowing gently. He loves playing with a small red ball in the living room. Whiskers eats fish and drinks fresh milk every afternoon.",
+                question: "9. Which adjective describes Whiskers' personality?",
+                options: ["A. Lazy and calm", "B. Energetic and playful", "C. Fierce and aggressive", "D. Shy and slow"],
+                answer: 1, // B
+                explanation: "Sifat Whiskers disebutkan dalam kalimat: 'Whiskers is very energetic and playful.'"
+            },
+            {
+                textTitle: "Text 2 (For Questions 7 - 12)",
+                textContent: "My cat, Whiskers, is a small domestic cat. He has soft orange and white fur with bright green eyes. Whiskers is very energetic and playful. Every morning, he wakes me up by meowing gently. He loves playing with a small red ball in the living room. Whiskers eats fish and drinks fresh milk every afternoon.",
+                question: "10. 'Whiskers eats fish and drinks fresh milk...' The words 'eats' and 'drinks' are examples of...",
+                options: ["A. Passive verbs", "B. Action verbs in Simple Present Tense", "C. Past tense verbs", "D. Nouns"],
+                answer: 1, // B
+                explanation: "'Eats' dan 'drinks' adalah action verbs (kata kerja aksi) bentuk Simple Present Tense (Verb 1 + s)."
+            },
+            {
+                textTitle: "Text 2 (For Questions 7 - 12)",
+                textContent: "My cat, Whiskers, is a small domestic cat. He has soft orange and white fur with bright green eyes. Whiskers is very energetic and playful. Every morning, he wakes me up by meowing gently. He loves playing with a small red ball in the living room. Whiskers eats fish and drinks fresh milk every afternoon.",
+                question: "11. What is the social function of the text?",
+                options: ["A. To tell a funny story about a cat", "B. To describe a specific cat named Whiskers", "C. To explain how to feed a cat", "D. To persuade people to buy cats"],
+                answer: 1, // B
+                explanation: "Tujuan sosial teks deskriptif adalah mendeskripsikan objek spesifik (dalam hal ini kucing bernama Whiskers)."
+            },
+            {
+                textTitle: "Text 2 (For Questions 7 - 12)",
+                textContent: "My cat, Whiskers, is a small domestic cat. He has soft orange and white fur with bright green eyes. Whiskers is very energetic and playful. Every morning, he wakes me up by meowing gently. He loves playing with a small red ball in the living room. Whiskers eats fish and drinks fresh milk every afternoon.",
+                question: "12. What does Whiskers like to play with?",
+                options: ["A. A small green doll", "B. A small red ball", "C. A plastic fish", "D. A piece of string"],
+                answer: 1, // B
+                explanation: "Teks menyebutkan: 'He loves playing with a small red ball in the living room.'"
+            },
+
+            // General Theory & Grammar Questions (13 - 30)
+            {
+                textTitle: null,
+                textContent: null,
+                question: "13. What is the main purpose of a descriptive text?",
+                options: [
+                    "A. To entertain readers with a fiction story",
+                    "B. To describe a particular person, place, or thing",
+                    "C. To explain steps on how to make something",
+                    "D. To discuss two different opinions about a topic"
+                ],
+                answer: 1, // B
+                explanation: "Tujuan utama Descriptive Text adalah mendeskripsikan orang, tempat, atau benda tertentu secara spesifik."
+            },
+            {
+                textTitle: null,
+                textContent: null,
+                question: "14. Which of the following is the correct generic structure of Descriptive Text?",
+                options: [
+                    "A. Orientation - Complication - Resolution",
+                    "B. Goal - Materials - Steps",
+                    "C. Identification - Description",
+                    "D. Thesis - Arguments - Recommendation"
+                ],
+                answer: 2, // C
+                explanation: "Struktur generik teks deskriptif terdiri dari Identification (pengenalan) dan Description (deskripsi detail)."
+            },
+            {
+                textTitle: null,
+                textContent: null,
+                question: "15. The part of the text that introduces the object to be described is called...",
+                options: ["A. Reorientation", "B. Identification", "C. Description", "D. Event"],
+                answer: 1, // B
+                explanation: "Identification adalah bagian awal teks yang mengenalkan subjek/objek yang akan dibahas."
+            },
+            {
+                textTitle: null,
+                textContent: null,
+                question: "16. What tenses is mostly used in Descriptive Text?",
+                options: ["A. Simple Past Tense", "B. Future Tense", "C. Simple Present Tense", "D. Past Continuous Tense"],
+                answer: 2, // C
+                explanation: "Descriptive Text menggunakan Simple Present Tense karena menyampaikan fakta dan deskripsi keadaan saat ini."
+            },
+            {
+                textTitle: null,
+                textContent: null,
+                question: "17. Complete the sentence: 'Bali _____ famous for its beautiful beaches.'",
+                options: ["A. are", "B. is", "C. am", "D. were"],
+                answer: 1, // B
+                explanation: "Subjek 'Bali' bersifat tunggal (singular third person), sehingga to be present yang tepat adalah 'is'."
+            },
+            {
+                textTitle: null,
+                textContent: null,
+                question: "18. Complete the sentence: 'My brother _____ a tall body and curly hair.'",
+                options: ["A. have", "B. has", "C. having", "D. had"],
+                answer: 1, // B
+                explanation: "Subjek 'My brother' (He) menggunakan kata kerja 'has' untuk menyatakan kepemilikan ciri fisik dalam present tense."
+            },
+            {
+                textTitle: null,
+                textContent: null,
+                question: "19. Which of the following words is an ADJECTIVE (kata sifat)?",
+                options: ["A. Beautifully", "B. Beautiful", "C. Beauty", "D. Beautify"],
+                answer: 1, // B
+                explanation: "'Beautiful' adalah kata sifat (adjective), 'beauty' (kata benda), 'beautifully' (kata keterangan), 'beautify' (kata kerja)."
+            },
+            {
+                textTitle: null,
+                textContent: null,
+                question: "20. Which noun phrase represents a 'Specific Participant'?",
+                options: ["A. A mountain", "B. Mount Bromo", "C. Some beaches", "D. Any city"],
+                answer: 1, // B
+                explanation: "'Mount Bromo' adalah contoh Specific Participant karena merujuk pada objek tempat yang khusus dan spesifik."
+            },
+            {
+                textTitle: null,
+                textContent: null,
+                question: "21. Choose the sentence with the correct Simple Present Tense structure:",
+                options: [
+                    "A. She go to the library every day.",
+                    "B. She goes to the library every day.",
+                    "C. She going to the library every day.",
+                    "D. She went to the library every day."
+                ],
+                answer: 1, // B
+                explanation: "Dalam Simple Present Tense, subjek 'She' membutuhkan kata kerja bertambah -es/s (go -> goes)."
+            },
+            {
+                textTitle: null,
+                textContent: null,
+                question: "22. Which word in the following sentence is an Action Verb? 'Tourists take pictures in front of the palace.'",
+                options: ["A. Tourists", "B. Take", "C. Pictures", "D. Palace"],
+                answer: 1, // B
+                explanation: "'Take' (mengambil) adalah kata kerja aksi (action verb) yang menggambarkan suatu tindakan nyata."
+            },
+            {
+                textTitle: null,
+                textContent: null,
+                question: "23. 'The Eiffel Tower is very tall and majestic.' The underlined words ('tall' and 'majestic') are...",
+                options: ["A. Verbs", "B. Nouns", "C. Adjectives", "D. Adverbs"],
+                answer: 2, // C
+                explanation: "'Tall' (tinggi) dan 'majestic' (megah) adalah Adjectives (kata sifat) yang mendeskripsikan Menara Eiffel."
+            },
+            {
+                textTitle: null,
+                textContent: null,
+                question: "24. 'Anisyah has a round face, sharp nose, and fair skin.' What is being described in this sentence?",
+                options: ["A. Her personality", "B. Her physical appearance", "C. Her daily routine", "D. Her hobbies"],
+                answer: 1, // B
+                explanation: "Wajah bulat, hidung mancung, dan kulit cerah menggambarkan penampilan fisik (physical appearance)."
+            },
+            {
+                textTitle: null,
+                textContent: null,
+                question: "25. Complete the sentence: 'They _____ visit the national park every weekend.'",
+                options: ["A. visits", "B. visiting", "C. visit", "D. visited"],
+                answer: 2, // C
+                explanation: "Subjek jamak 'They' dalam Simple Present Tense menggunakan verb dasar (Verb 1) tanpa akhiran -s/es ('visit')."
+            },
+            {
+                textTitle: null,
+                textContent: null,
+                question: "26. Which section of a descriptive text usually contains detailed attributes, qualities, and features of the subject?",
+                options: ["A. Re-orientation", "B. Description", "C. Recommendation", "D. Identification"],
+                answer: 1, // B
+                explanation: "Bagian 'Description' berisi penjelasan detail mengenai karakteristik, sifat, dan tampilan objek."
+            },
+            {
+                textTitle: null,
+                textContent: null,
+                question: "27. 'My school has thirty clean classrooms and a modern library.' The word 'clean' modifies...",
+                options: ["A. School", "B. Classrooms", "C. Library", "D. Modern"],
+                answer: 1, // B
+                explanation: "Kata sifat 'clean' menjelaskan kata benda 'classrooms' (ruang kelas yang bersih)."
+            },
+            {
+                textTitle: null,
+                textContent: null,
+                question: "28. What is the opposite (antonym) of the adjective 'Ancient'?",
+                options: ["A. Old", "B. Historic", "C. Modern", "D. Huge"],
+                answer: 2, // C
+                explanation: "Lawan kata dari 'Ancient' (kuno/purbakala) adalah 'Modern' (modern/baru)."
+            },
+            {
+                textTitle: null,
+                textContent: null,
+                question: "29. Complete the sentence: 'Borobudur Temple _____ many foreign visitors every month.'",
+                options: ["A. attract", "B. attracts", "C. attracting", "D. attracted"],
+                answer: 1, // B
+                explanation: "Subjek 'Borobudur Temple' adalah tunggal (It), sehingga kata kerjanya ditambah -s ('attracts')."
+            },
+            {
+                textTitle: null,
+                textContent: null,
+                question: "30. 'Rafflesia Arnoldii is a giant flower with a strong unpleasant smell.' The sentence tells us about...",
+                options: [
+                    "A. How to plant Rafflesia Arnoldii",
+                    "B. A unique feature of Rafflesia Arnoldii",
+                    "C. The history of flower discovery",
+                    "D. A story about a giant gardener"
+                ],
+                answer: 1, // B
+                explanation: "Kalimat tersebut mendeskripsikan ciri-ciri unik (ukuran raksasa dan bau menyengat) dari bunga Rafflesia Arnoldii."
+            }
+        ];
+
+        // State Variables
+        let currentQuestionIndex = 0;
+        let userAnswers = new Array(quizData.length).fill(null);
+        const REQUIRED_CODE = "budi123456";
+
+        // Switch Tabs
+        function switchTab(tabName) {
+            const tabs = document.querySelectorAll('.tab-btn');
+            const contents = document.querySelectorAll('.tab-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            if (tabName === 'materi') {
+                tabs[0].classList.add('active');
+                document.getElementById('materi-tab').classList.add('active');
+            } else {
+                tabs[1].classList.add('active');
+                document.getElementById('kuis-tab').classList.add('active');
+                renderQuestion();
+            }
+        }
+
+        // Render Question
+        function renderQuestion() {
+            const currentData = quizData[currentQuestionIndex];
+
+            // Progress text
+            document.getElementById('quiz-progress').innerText = `Soal ${currentQuestionIndex + 1} dari ${quizData.length}`;
+
+            // Reading text box display
+            const readingBox = document.getElementById('reading-text-wrapper');
+            if (currentData.textContent) {
+                readingBox.style.display = 'block';
+                readingBox.innerHTML = `<h4>${currentData.textTitle}</h4><p>${currentData.textContent}</p>`;
+            } else {
+                readingBox.style.display = 'none';
+            }
+
+            // Question Text
+            document.getElementById('question-text').innerText = currentData.question;
+
+            // Options
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            const prefixes = ['A', 'B', 'C', 'D'];
+            currentData.options.forEach((optText, index) => {
+                const optionBtn = document.createElement('div');
+                optionBtn.className = 'option-btn';
+                if (userAnswers[currentQuestionIndex] === index) {
+                    optionBtn.classList.add('selected');
+                }
+
+                optionBtn.onclick = () => selectOption(index);
+
+                // Strip leading 'A. ', 'B. ' if already inside option string for clean rendering
+                const cleanText = optText.replace(/^[A-D]\.\s*/, '');
+
+                optionBtn.innerHTML = `
+                    <span class="option-prefix">${prefixes[index]}</span>
+                    <span>${cleanText}</span>
+                `;
+
+                optionsContainer.appendChild(optionBtn);
+            });
+
+            // Button controls
+            document.getElementById('btn-prev').disabled = currentQuestionIndex === 0;
+
+            if (currentQuestionIndex === quizData.length - 1) {
+                document.getElementById('btn-next').style.display = 'none';
+                document.getElementById('btn-submit').style.display = 'block';
+            } else {
+                document.getElementById('btn-next').style.display = 'block';
+                document.getElementById('btn-submit').style.display = 'none';
+            }
+        }
+
+        // Select Option
+        function selectOption(optionIndex) {
+            userAnswers[currentQuestionIndex] = optionIndex;
+            renderQuestion();
+        }
+
+        // Navigate Quiz
+        function navigateQuiz(direction) {
+            const newIndex = currentQuestionIndex + direction;
+            if (newIndex >= 0 && newIndex < quizData.length) {
+                currentQuestionIndex = newIndex;
+                renderQuestion();
+            }
+        }
+
+        // Submit Quiz
+        function submitQuiz() {
+            // Check unanswered
+            const unansweredCount = userAnswers.filter(ans => ans === null).length;
+            if (unansweredCount > 0) {
+                const confirmSubmit = confirm(`Masih ada ${unansweredCount} soal yang belum dijawab. Apakah Anda yakin ingin mengumpulkan jawaban?`);
+                if (!confirmSubmit) return;
+            }
+
+            // Calculate Score
+            let score = 0;
+            quizData.forEach((item, index) => {
+                if (userAnswers[index] === item.answer) {
+                    score++;
+                }
+            });
+
+            // Hide Quiz Container, Show Results
+            document.getElementById('quiz-container').style.display = 'none';
+            const resultContainer = document.getElementById('result-container');
+            resultContainer.style.display = 'block';
+
+            // Display Score
+            document.getElementById('final-score').innerText = `${score} / ${quizData.length}`;
+
+            // Score Message
+            const percentage = (score / quizData.length) * 100;
+            let msg = "";
+            if (percentage >= 85) {
+                msg = "🎉 Luar Biasa! Pemahaman Anda tentang Descriptive Text sangat baik!";
+            } else if (percentage >= 70) {
+                msg = "👍 Bagus! Anda sudah memahami materi dengan baik.";
+            } else {
+                msg = "📚 Tetap Semangat! Pelajari kembali Tab Materi dan ikuti pembahasan di depan.";
+            }
+            document.getElementById('score-message').innerText = msg;
+
+            // Ensure access box is shown and review is hidden on submission
+            document.getElementById('access-code-box').style.display = 'inline-block';
+            document.getElementById('review-card').style.display = 'none';
+            document.getElementById('teacher-code').value = '';
+            document.getElementById('code-error').style.display = 'none';
+        }
+
+        // Unlock Review Section with Code
+        function unlockReview() {
+            const inputCode = document.getElementById('teacher-code').value.trim();
+            const errorMsg = document.getElementById('code-error');
+
+            if (inputCode === REQUIRED_CODE) {
+                errorMsg.style.display = 'none';
+                document.getElementById('access-code-box').style.display = 'none';
+                document.getElementById('review-card').style.display = 'block';
+                renderReview();
+                
+                // Scroll smooth to review card
+                document.getElementById('review-card').scrollIntoView({ behavior: 'smooth' });
+            } else {
+                errorMsg.style.display = 'block';
+            }
+        }
+
+        // Render Review List
+        function renderReview() {
+            const reviewList = document.getElementById('review-list');
+            reviewList.innerHTML = '';
+
+            const prefixes = ['A', 'B', 'C', 'D'];
+
+            quizData.forEach((item, index) => {
+                const userAnsIndex = userAnswers[index];
+                const isCorrect = userAnsIndex === item.answer;
+
+                const reviewItem = document.createElement('div');
+                reviewItem.className = `review-item ${isCorrect ? 'correct' : 'incorrect'}`;
+
+                let userAnsText = userAnsIndex !== null 
+                    ? `${prefixes[userAnsIndex]}. ${item.options[userAnsIndex].replace(/^[A-D]\.\s*/, '')}`
+                    : "Tidak dijawab";
+
+                let correctAnsText = `${prefixes[item.answer]}. ${item.options[item.answer].replace(/^[A-D]\.\s*/, '')}`;
+
+                reviewItem.innerHTML = `
+                    <div class="review-q-title">${index + 1}. ${item.question}</div>
+                    <div class="review-ans-box ${isCorrect ? 'ans-user-correct' : 'ans-user-incorrect'}">
+                        <strong>Jawaban Anda:</strong> ${userAnsText} ${isCorrect ? '✅ (Benar)' : '❌ (Salah)'}
+                    </div>
+                    ${!isCorrect ? `
+                    <div class="review-ans-box ans-key">
+                        <strong>Kunci Jawaban Benar:</strong> ${correctAnsText}
+                    </div>` : ''}
+                    <div class="explanation">
+                        <strong>💡 Pembahasan:</strong> ${item.explanation}
+                    </div>
+                `;
+
+                reviewList.appendChild(reviewItem);
+            });
+        }
+
+        // Restart Quiz
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            userAnswers = new Array(quizData.length).fill(null);
+            document.getElementById('result-container').style.display = 'none';
+            document.getElementById('quiz-container').style.display = 'block';
+            renderQuestion();
+        }
+    </script>
+</body>
+</html>
